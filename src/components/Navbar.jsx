@@ -12,15 +12,23 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Feather from '../feather.png';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import useAuthCall from '../hooks/useAuthCall';
 
 
 
 const pages = ['Dashboard', 'New Blog', 'About'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Login','Register'];
+const logoutSet = ['Logout'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({setAuthType}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  let navigate = useNavigate()
+  const { logout } = useAuthCall();
+  const { currentUser } = useSelector(state => state.auth);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,18 +45,46 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handleLeftMenuClick = (e) => {
+    
+    if(e.target.textContent === 'Dashboard'){
+      navigate('/')
+    }
+    else if(e.target.textContent === 'New Blog'){
+      navigate('/newblog')
+    }
+    else if(e.target.textContent === 'About'){
+      navigate('/about')
+    }
+    setAnchorElNav(null);
+  }
+  const handleRightMenuClick = (e) => {
+    navigate('/auth')
+    if(e.target.textContent === 'Login'){
+      setAuthType('login')
+    }
+    else if(e.target.textContent === 'Register'){
+      setAuthType('register')
+    }
+    setAnchorElUser(null);
+  }
+
+  const handleLogout = () => {
+    logout();
+    setAnchorElUser(null);
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box component="img" src={Feather} sx={{ height: 90, width:90, display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
-              mr: 2,
+              mr: 4,
+              ml: -5,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -57,7 +93,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            yBLOG
+            myBLOG
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -90,7 +126,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={handleLeftMenuClick}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -100,10 +136,9 @@ function ResponsiveAppBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
+              ml: -3,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
@@ -113,20 +148,21 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            yBLOG
+            myBLOG
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={handleLeftMenuClick}
+                sx={{ my: 2, color: '#002499', display: 'block', fontSize:'1rem', "&:hover": {border: "1px solid #002499"}, }}
               >
                 {page}
               </Button>
             ))}
           </Box>
-
+          
+          <Typography sx={{ mx: 2, color: '#002499'}}>{currentUser}</Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -149,11 +185,23 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {currentUser ? <div>{logoutSet.map((log) => (
+                              <MenuItem key={log} onClick={handleLogout}>
+                                <Typography textAlign="center">{log}</Typography>
+                              </MenuItem>
+                              ))
+                            } 
+                            </div>
+                            :
+                            <div>
+                              {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleRightMenuClick}>
+                                  <Typography textAlign="center">{setting}</Typography>
+                                </MenuItem>
+                              ))}
+                              
+                            </div>
+              }
             </Menu>
           </Box>
         </Toolbar>
