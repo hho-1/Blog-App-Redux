@@ -1,8 +1,12 @@
+import { Container } from '@mui/material'
 import React from 'react'
 
 const DashBoard = () => {
   return (
-    <div>DashBoard</div>
+    <Container sx={{height:'84vh'}}>
+
+
+    </Container>
   )
 }
 

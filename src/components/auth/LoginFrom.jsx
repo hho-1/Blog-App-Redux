@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, TextField, Link, Typography, Box } from '@mui/material';
+import { Button, TextField, Link, Typography, Box, Container } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import useAuthCall from '../../hooks/useAuthCall';
 
@@ -35,7 +35,7 @@ const LoginForm = ({setAuthType}) => {
   });
 
   return (
-    <div>
+    <Container>
       <form onSubmit={formik.handleSubmit} >
         <Box sx={{textAlign: 'center'}}>
           <LockIcon sx={{width:50, height:50, padding: 0.8, borderRadius: '50%', backgroundColor:'#ffcd44'}}/>
@@ -75,7 +75,7 @@ const LoginForm = ({setAuthType}) => {
           Don't have an account? <Link underline="none" onClick={()=>setAuthType('register')} sx={{cursor: 'pointer', "&:hover": {color:'#57c1ff'}}}>Sign Up</Link> 
         </Typography>
       </form>
-    </div>
+    </Container>
   );
 };
 

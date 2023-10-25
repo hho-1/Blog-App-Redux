@@ -14,7 +14,8 @@ const Auth = ({authType, setAuthType}) => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    minHeight="90vh"
+                    minHeight="84vh"
+                    width="500px"
                     margin='auto'
                 >
                     <LoginForm setAuthType={setAuthType}/>
@@ -24,7 +25,7 @@ const Auth = ({authType, setAuthType}) => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    minHeight="90vh"
+                    minHeight="84vh"
                     width="500px"
                     margin='auto'
                 >
