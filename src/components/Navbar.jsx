@@ -20,7 +20,7 @@ import useAuthCall from '../hooks/useAuthCall';
 
 const pages = ['Dashboard', 'New Blog', 'About'];
 const settings = ['Login','Register'];
-const logoutSet = ['Logout'];
+const logoutSet = ['Profil', 'My Contributions','Logout'];
 
 function ResponsiveAppBar({setAuthType}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
