@@ -23,7 +23,7 @@ const { contributions } = useSelector(state => state.blog);
   }, []);
 
   return (
-    <Container sx={{height:'fit-content', minHeight:'82vh'}}>
+    <Container sx={{height:'fit-content', minHeight:'82vh', marginBottom:'2rem'}}>
       <Grid
         container
         alignItems="center"

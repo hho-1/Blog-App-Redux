@@ -20,7 +20,7 @@ import useAuthCall from '../hooks/useAuthCall';
 
 const pages = ['Dashboard', 'New Blog', 'About'];
 const settings = ['Login','Register'];
-const logoutSet = ['Profil', 'My Contributions','Logout'];
+const logoutSet = ['Profile', 'My Blogs','Logout'];
 
 function ResponsiveAppBar({setAuthType}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -66,11 +66,22 @@ function ResponsiveAppBar({setAuthType}) {
     else if(e.target.textContent === 'Register'){
       setAuthType('register')
     }
+    
     setAnchorElUser(null);
   }
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = (e) => {
+    if(e.target.textContent === 'Logout'){
+      logout();
+    }
+    else if(e.target.textContent === 'My Blogs'){
+      navigate('/myblogs')
+    }
+    else if(e.target.textContent === 'Profile'){
+      navigate('/profile')
+    }
+
+
     setAnchorElUser(null);
   }
 

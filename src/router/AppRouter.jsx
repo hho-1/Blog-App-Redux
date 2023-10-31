@@ -6,6 +6,9 @@ import Footer from '../components/Footer'
 import Auth from '../pages/Auth'
 import About from '../pages/About'
 import NewBlog from '../pages/NewBlog'
+import PrivateRouter from './PrivateRouter'
+import MyBlogs from '../pages/MyBlogs'
+import Profile from '../pages/Profile'
 
 const AppRouter = () => {
 
@@ -18,7 +21,16 @@ const AppRouter = () => {
             <Route path='/' element={<DashBoard/>}/>
             <Route path='/auth' element={<Auth authType={authType} setAuthType={setAuthType}/>}/>
             <Route path='/about' element={<About/>}/>
-            <Route path='/newblog' element={<NewBlog/>}/>
+            <Route path='/newblog' element={<PrivateRouter/>}>
+              <Route path='' element={<NewBlog/>}/>
+            </Route>
+            <Route path='/myblogs' element={<PrivateRouter/>}>
+              <Route path='' element={<MyBlogs/>}/>
+            </Route>
+            <Route path='/profile' element={<PrivateRouter/>}>
+              <Route path='' element={<Profile/>}/>
+            </Route>
+  
         </Routes>
         <Footer/>
     </BrowserRouter>
