@@ -1,15 +1,16 @@
 //import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchFail, fetchStart, contributionsSuccess } from "../features/blogSlice";
+import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess } from "../features/blogSlice";
 //import axios from "axios";
 //import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 import useAxios from "./useAxios";
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const useBlogCall = () => {
   const dispatch = useDispatch();
   //const { token } = useSelector(state => state.auth);
 
-  const { axiosWithPublic } = useAxios();
+  const { axiosWithPublic, axiosWithToken } = useAxios();
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -60,18 +61,32 @@ const useBlogCall = () => {
     }
   }; */
 
-  /* const postStockData = async (url,info) => {
+  const postStockData = async (url,info) => {
     dispatch(fetchStart());
     try {
-      const {data} = await axiosWithToken.post(`stock/${url}/`,info);
+      //const url = "blogs";
+      const { data } = await axiosWithPublic(`${BASE_URL}api/${url}/`, info);
 
-      getStockData(url);
+      getContributions(url);
       toastSuccessNotify(`${url} successfuly created!`);
+      dispatch(contributionsSuccess({ data, url }));
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`${url} not successfuly created!`);
     }
-  }; */
+  };
+  const getCategories = async () => {
+    dispatch(fetchStart());
+    try {
+      const [categories] = await Promise.all([
+        axiosWithToken.get(`api/categories/`),
+      ]);
+
+      dispatch(getCategoriesSuccess([categories?.data]));
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
 
   /* const putStockData = async (url, info) => {
     dispatch(fetchStart());
@@ -87,12 +102,11 @@ const useBlogCall = () => {
   }; */
 
   return {
-    // getFirms,
-    //  getBrands,
+  
     getContributions,
-    // deleteStockData,
-    // postStockData,
-    // putStockData,
+    getCategories,
+    postStockData,
+    
   };
 };
 
