@@ -25,6 +25,18 @@ const useBlogCall = () => {
         dispatch(fetchFail());
       }
     };
+    const getCategories = async () => {
+      dispatch(fetchStart());
+      try {
+        const url = "categories";
+        const { data } = await axiosWithToken(`${BASE_URL}api/${url}/`);
+        //console.log(data);
+        dispatch(getCategoriesSuccess({ data, url })); // {data:data,url:url}
+      } catch (error) {
+        dispatch(fetchFail());
+      }
+    };
+    
     /* const getContributions = async () => {
       dispatch(fetchStart());
       try {
@@ -65,9 +77,10 @@ const useBlogCall = () => {
     dispatch(fetchStart());
     try {
       //const url = "blogs";
-      const { data } = await axiosWithPublic(`${BASE_URL}api/${url}/`, info);
+      const { data } = await axiosWithToken(`${BASE_URL}api/${url}/`, info);
 
-      getContributions(url);
+      getContributions();
+      
       toastSuccessNotify(`${url} successfuly created!`);
       dispatch(contributionsSuccess({ data, url }));
     } catch (error) {
@@ -75,18 +88,19 @@ const useBlogCall = () => {
       toastErrorNotify(`${url} not successfuly created!`);
     }
   };
-  const getCategories = async () => {
+  /* const getCategories = async () => {
     dispatch(fetchStart());
     try {
-      const [categories] = await Promise.all([
-        axiosWithToken.get(`api/categories/`),
-      ]);
+      const {categories} = await Promise.all({
+        const {data} =await  axiosWithToken.get(`/api/categories/`)
+    })
 
       dispatch(getCategoriesSuccess([categories?.data]));
     } catch (error) {
       dispatch(fetchFail());
     }
-  };
+  }; */
+  
 
   /* const putStockData = async (url, info) => {
     dispatch(fetchStart());
