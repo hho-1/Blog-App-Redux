@@ -11,9 +11,6 @@ const DashBoard = () => {
 const { contributions } = useSelector(state => state.blog);
   const { getContributions } = useBlogCall();
   
-  
-
-  
 
   useEffect(() => {
     
@@ -33,7 +30,7 @@ const { contributions } = useSelector(state => state.blog);
         mt={3}>
         {contributions?.map(entry => (
           <Grid item key={entry.id}>
-            <ImgMediaCard entry={entry}/>
+            <ImgMediaCard entry={entry} {...entry}/>
           </Grid>
         ))}
       </Grid>

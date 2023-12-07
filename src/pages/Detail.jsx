@@ -1,44 +1,46 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Box, Grid, IconButton } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
+//import useAxios from '../hooks/useAxios';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { useNavigate } from 'react-router-dom';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import axios from 'axios';
+//import { useDispatch } from 'react-redux';
+import useBlogCall from '../hooks/useBlogCall';
+
+const Detail = () => {
+
+    const { id } = useParams();
+    const [details, setDetails] = useState("");
 
 
-export default function ImgMediaCard({id, publish_date, title, image, content, author, likes, comments, post_views}) {
+    const { getContributions } = useBlogCall();
 
-    const date = publish_date.slice(0,10)
-    //console.log(date);
-    const time = publish_date.slice(11,19)
-    //console.log(time);
+    //const { axiosWithToken } = useAxios();
 
     let navigate = useNavigate()
 
-    // const handleDetailClick = (id) => {
-    //   console.log(id);
-    //   navigate("/details/" + id)
-    // }
-    
+    useEffect(() => {        //axios ile setDetails birlikte useEffect disinda olursa sonsuz döngü olur
+        const blogs = getContributions()
+        //console.log(blogs);
+        setDetails(Object.entries(blogs).filter((item) => item.id === id))
+        
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
   return (
-    <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
+    <Card sx={{ width: 745, height: 630, display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
       <CardMedia
         component="img"
-        alt={title}
-        height="150"
+        alt={details.title}
+        height="300"
         sx={{width:'fit-content', margin:'auto', marginTop:'0.5rem', marginBottom:'9rem'}}
-        image={image}
+        image={details.image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" sx={{textAlign:'center', marginTop:'-10rem'}}>
-            {title}
+            {details.title}
         </Typography>
         <p style={{
             fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -54,15 +56,15 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
             letterSpacing: "0.01071em",
             marginTop:'1.0rem'
         }}>
-            {content}
+            {details.content}
         </p>
         <Typography variant="body2" color="text.secondary" sx={{marginTop:'2rem', marginBottom:'1rem'}}>
-            {date}  {time}
+            {details.date}  {details.time}
         </Typography>
         <Box sx={{display:'flex', alignItems:'center'}} >
             <AccountCircleIcon/>
             <Typography variant="body2" color="text.secondary">
-                {author}
+                {details.author}
             </Typography>
         </Box>
         
@@ -73,21 +75,23 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
             <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{likes}</Typography>
+            <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.likes}</Typography>
             <IconButton aria-label="add to favorites">
                 <ChatIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{comments.length}</Typography>
+            {/* <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.comments.length}</Typography> */}
             <IconButton aria-label="add to favorites">
                 <VisibilityOutlinedIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{post_views}</Typography>
+            <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.post_views}</Typography>
         </Grid>
         <Grid item xs={4}>
-            <Button size="small" onClick={()=>navigate("/blogs/" + id)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Read More</Button>
+            <Button size="small" onClick={()=>navigate("/details/" + id)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Read More</Button>
         </Grid>
         
       </CardActions>
     </Card>
-  );
+  )
 }
+
+export default Detail

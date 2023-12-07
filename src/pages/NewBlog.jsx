@@ -12,8 +12,8 @@ const NewBlog = () => {
 
   const [info, setInfo] = useState({
     title: "",
-    imageURL: "",
-    category_id: "",
+    image: "",
+    category: 0,
     status: "",
     content: "",
 });
@@ -41,14 +41,14 @@ const { postStockData } = useBlogCall();
 
     setInfo({ 
       title: "",
-      imageURL: "",
-      category_id: "",
+      image: "",
+      category: "",
       status: "",
       content: "" })
 
   };
 
-  const status = ["Keep as draft", "Publish"]
+  const status = ["d", "p"]
 
   return (
     <Container sx={{height:'75vh'}} >
@@ -70,10 +70,10 @@ const { postStockData } = useBlogCall();
           <TextField
             sx={{marginTop:1}}
             fullWidth
-            id="imageURL"
-            name="imageURL"
+            id="image"
+            name="image"
             label="Image URL"
-            value={info?.imageURL}
+            value={info?.image}
             onChange={handleChange}
             
           /> 
@@ -82,8 +82,8 @@ const { postStockData } = useBlogCall();
             <Select
               labelId="category"
               id="category"
-              name="category_id"
-              value={info?.category_id || ""}
+              name="category"
+              value={info?.category || ""}
               label="Category"
               required
               onChange={handleChange}>
@@ -120,7 +120,6 @@ const { postStockData } = useBlogCall();
           
         />
       
-       
         <Button color="primary" onSubmit={handleSubmit} variant="contained" fullWidth type="submit" sx={{marginTop: 3, "&:hover": {backgroundColor:'#57c1ff'}}}>
           Add Blog
         </Button>

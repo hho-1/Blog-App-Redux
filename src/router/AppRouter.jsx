@@ -9,6 +9,7 @@ import NewBlog from '../pages/NewBlog'
 import PrivateRouter from './PrivateRouter'
 import MyBlogs from '../pages/MyBlogs'
 import Profile from '../pages/Profile'
+import Detail from '../pages/Detail'
 
 const AppRouter = () => {
 
@@ -26,6 +27,9 @@ const AppRouter = () => {
             </Route>
             <Route path='/myblogs' element={<PrivateRouter/>}>
               <Route path='' element={<MyBlogs/>}/>
+            </Route>
+            <Route path="/blogs/:id" element={<PrivateRouter/>}>
+              <Route path="" element={<Detail />} />   {/* Path bir üst satirda verildi */}
             </Route>
             <Route path='/profile' element={<PrivateRouter/>}>
               <Route path='' element={<Profile/>}/>

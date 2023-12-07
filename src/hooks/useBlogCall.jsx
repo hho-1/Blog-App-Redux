@@ -29,7 +29,7 @@ const useBlogCall = () => {
       dispatch(fetchStart());
       try {
         const url = "categories";
-        const { data } = await axiosWithToken(`${BASE_URL}api/${url}/`);
+        const { data } = await axiosWithToken.get(`${BASE_URL}api/${url}/`);
         //console.log(data);
         dispatch(getCategoriesSuccess({ data, url })); // {data:data,url:url}
       } catch (error) {
@@ -73,12 +73,14 @@ const useBlogCall = () => {
     }
   }; */
 
-  const postStockData = async (url,info) => {
+  const postStockData = async (url ,info) => {
     dispatch(fetchStart());
-    try {
+    //console.log(url);
+    try {                                   
       //const url = "blogs";
-      const { data } = await axiosWithToken(`${BASE_URL}api/${url}/`, info);
+      const { data } = await axiosWithToken.post(`/api/${url}/`, info);
 
+      //console.log(info);
       getContributions();
       
       toastSuccessNotify(`${url} successfuly created!`);
@@ -88,6 +90,18 @@ const useBlogCall = () => {
       toastErrorNotify(`${url} not successfuly created!`);
     }
   };
+  const putStockData = async (url, info) => {
+    dispatch(fetchStart())
+    try {
+      await axiosWithToken.put(`/blogs/${url}/${info.id}/`, info)
+      toastSuccessNotify(`${url} succesfuly updated`)
+      //getContributions(url)
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify(`${url} can not be updated`)
+      console.log(error)
+    }
+  }
   /* const getCategories = async () => {
     dispatch(fetchStart());
     try {
@@ -120,6 +134,7 @@ const useBlogCall = () => {
     getContributions,
     getCategories,
     postStockData,
+    putStockData
     
   };
 };
