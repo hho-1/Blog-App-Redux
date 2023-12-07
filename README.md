@@ -113,33 +113,6 @@ SOLUTION
 
 Build a Milestone Blog App using ReactJS.
 
-### At the end of the project, following topics are to be covered;
-
-- HTML
-
-- CSS
-
-- JS
-
-- ReactJS
-
-### At the end of the project, students will be able to;
-
-- improve coding skills within HTML & CSS & JS & ReactJS & Django.
-
-- use git commands (push, pull, commit, add etc.) and Github as Version Control System.
-
-## Steps to Solution
-
-- Step 1 : Create React App using `npx create-react-app milestone-blog-app`
-
-- Step 2 : Use Django backend for authentication and CRUD operations.
-
-- Step 3 : You can use css frameworks like Bootstrap, Tailwind Css, Material UI.
-
-- Step 4 : You can view sample app on https://milestone-blogapps.vercel.app/.
-
-- Step 5 : Add project gif to your project and README.md file.
 
 ## Demo
 
