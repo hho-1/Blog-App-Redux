@@ -22,10 +22,14 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
 
     let navigate = useNavigate()
 
-    // const handleDetailClick = (id) => {
-    //   console.log(id);
-    //   navigate("/details/" + id)
-    // }
+    const [likeClicked, setLikeClicked] = React.useState(false)
+
+    const handleLikeClick = () => {
+      setLikeClicked(!likeClicked)
+      if(likeClicked) likes = likes + 1 
+      else if(!likeClicked) likes = likes - 1
+      
+    }
     
   return (
     <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
@@ -70,9 +74,15 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
       </CardContent>
       <CardActions>
         <Grid item xs={8} sx={{display:'flex', alignItems:'center', justifyContent:'flex-start', marginInlineStart:'-0.5rem'}}>
-            <IconButton aria-label="add to favorites">
+            {
+              likeClicked ? (<IconButton aria-label="add to favorites" sx={{color:'red'}} onClick={handleLikeClick}>
+                <FavoriteIcon />
+            </IconButton>) : (<IconButton aria-label="add to favorites" onClick={handleLikeClick}>
                 <FavoriteIcon />
             </IconButton>
+            )
+            }
+            
             <Typography sx={{marginInlineStart:'-0.4rem'}}>{likes}</Typography>
             <IconButton aria-label="add to favorites">
                 <ChatIcon />

@@ -26,7 +26,7 @@ useEffect(() => {
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
-const { postStockData } = useBlogCall();
+const { postBlogData } = useBlogCall();
 
 
   const handleChange = (e) => {
@@ -37,7 +37,7 @@ const { postStockData } = useBlogCall();
     e.preventDefault();
     //console.log(info);
 
-    postStockData("blogs", info);
+    postBlogData("blogs", info);
 
     setInfo({ 
       title: "",

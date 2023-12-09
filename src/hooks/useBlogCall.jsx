@@ -36,44 +36,12 @@ const useBlogCall = () => {
         dispatch(fetchFail());
       }
     };
-    
-    /* const getContributions = async () => {
-      dispatch(fetchStart());
-      try {
-        const url = "blogs";
-        const { data } = await axios(`${BASE_URL}api/${url}/`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        console.log(data);
-        // dispatch(getSuccess({data, url:"firms"}))
-        dispatch(getSuccess({ data, url })); // {data:data,url:url}
-      } catch (error) {
-        dispatch(fetchFail());
-      }
-    }; */
   
   
   //! istek atarken ortak olan base_url  ve token gibi değerleri her seferinde yazmak yerine axios instance kullanarak bunları orada tanımlıyoruz. Ve sonrasında sadece istek atmak istediğimiz end pointi yazmamız yeterli oluyor.
-  /* const deleteStockData = async (url, id) => {
-    dispatch(fetchStart());
-    try {
-      // await axios.delete(`${BASE_URL}stock/${url}/${id}/`, {
-      //   headers: {
-      //     Authorization: `Token ${token}`,
-      //   },
-      // });
-      await axiosWithToken.delete(`stock/${url}/${id}/`);
-      getStockData(url);
-      toastSuccessNotify(`${url} successfuly deleted!`);
-    } catch (error) {
-      dispatch(fetchFail());
-      toastErrorNotify(`${url} not successfuly deleted!`);
-    }
-  }; */
 
-  const postStockData = async (url ,info) => {
+
+  const postBlogData = async (url ,info) => {
     dispatch(fetchStart());
     //console.log(url);
     try {                                   
@@ -90,51 +58,40 @@ const useBlogCall = () => {
       toastErrorNotify(`${url} not successfuly created!`);
     }
   };
-  const putStockData = async (url, info) => {
+  const putBlogData = async (url, info) => {
     dispatch(fetchStart())
     try {
-      await axiosWithToken.put(`/blogs/${url}/${info.id}/`, info)
+      const data = await axiosWithToken.put(`/api/${url}/${info.id}/`, info)
+      getContributions()
       toastSuccessNotify(`${url} succesfuly updated`)
-      //getContributions(url)
+      dispatch(contributionsSuccess({ data, url }));
     } catch (error) {
       dispatch(fetchFail())
       toastErrorNotify(`${url} can not be updated`)
       console.log(error)
     }
   }
-  /* const getCategories = async () => {
-    dispatch(fetchStart());
+  const deleteBlogData = async (url, id) => {
+    dispatch(fetchStart())
     try {
-      const {categories} = await Promise.all({
-        const {data} =await  axiosWithToken.get(`/api/categories/`)
-    })
-
-      dispatch(getCategoriesSuccess([categories?.data]));
+      await axiosWithToken.delete(`/api/${url}/${id}/`)
+      toastSuccessNotify(`${url} succesfuly deleted`)
+      getContributions()
     } catch (error) {
-      dispatch(fetchFail());
+      dispatch(fetchFail())
+      toastErrorNotify(`${url} can not be deleted`)
+      console.log(error)
     }
-  }; */
-  
+  }
 
-  /* const putStockData = async (url, info) => {
-    dispatch(fetchStart());
-    try {
-      await axiosWithToken.put(`stock/${url}/${info.id}/`, info);
-
-      getStockData(url);
-      toastSuccessNotify(`${url} successfuly updated!`);
-    } catch (error) {
-      dispatch(fetchFail());
-      toastErrorNotify(`${url} not successfuly updated!`);
-    }
-  }; */
 
   return {
   
     getContributions,
     getCategories,
-    postStockData,
-    putStockData
+    postBlogData,
+    putBlogData,
+    deleteBlogData
     
   };
 };
