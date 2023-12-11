@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 //import useAxios from '../hooks/useAxios';
-import { Box, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -11,11 +11,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 // import axios from 'axios';
 //import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import UpdateModal from '../components/blog/UpdateModal';
+import UpdateModal from '../components/blog/BlogUpdateModal';
 import useBlogCall from '../hooks/useBlogCall';
+import CommentsCard from '../components/blog/CommentsCard';
 //import useBlogCall from '../hooks/useBlogCall';
 
 const Detail = () => {
+
+  const { currentUser } = useSelector(state => state.auth);
+
+  let navigate = useNavigate()
 
   const [info, setInfo] = useState({
     title: "",
@@ -45,8 +50,9 @@ const Detail = () => {
     const [details, setDetails] = useState("");
 
     const { contributions } = useSelector(state => state.blog);
+    //const { comments } = useSelector(state => state.blog);
 
-    const { deleteBlogData } = useBlogCall()
+    const { deleteBlogData, getComments } = useBlogCall()
     
     
 
@@ -72,21 +78,29 @@ const Detail = () => {
         setDetails(data[0])
         //console.log(data);
 
+        getComments()
+
         setInfo({
           id: data[0].id,
           title: data[0].title,
           image: data[0].image,
           category: data[0].category,
           status: data[0].status,
-          content: data[0].content
+          content: data[0].content,
+          comments: data[0].comments,
+          date: data[0].publish_date.slice(0,10),
+          time: data[0].publish_date.slice(11,19)
         });
         
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const [commentsOpened, setCommentsOpened] = useState(false)
+
+
   return (
-    <Container sx={{height:'80vh'}}>
-      <Card sx={{ width: 745, height: 700, display:'flex', flexDirection:'column', justifyContent:'space-between', mx:'auto', marginTop: '2rem' }}>
+    <Container sx={{minHeight:'80vh'}}>
+      <Card sx={{ width: 745, height: 700, display:'flex', flexDirection:'column', justifyContent:'space-between', mx:'auto', marginTop: '2rem', backgroundColor:'#faf2dd' }}>
         <CardMedia
           component="img"
           alt={details.title}
@@ -94,14 +108,14 @@ const Detail = () => {
           sx={{width:'fit-content', margin:'auto', marginTop:'0.5rem', marginBottom:'-2rem'}}
           image={details.image}
         />
-        <CardContent>
+        <CardContent sx={{marginTop:'1rem'}}>
           <Typography gutterBottom variant="h5" component="div" sx={{textAlign:'center'}}>
             {details.title}
           </Typography>
           <p style={{
             fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            overflow: "scroll",
+            //textOverflow: "ellipsis",
             display: "-webkit-box",
             WebkitLineClamp: 12,
             WebkitBoxOrient: "vertical",
@@ -114,17 +128,19 @@ const Detail = () => {
           }}>
             {details.content}
           </p>
-          <Typography variant="body2" color="text.secondary" sx={{marginTop:'2rem', marginBottom:'1rem'}}>
-            {details.date}  {details.time}
-          </Typography>
-          <Box sx={{display:'flex', alignItems:'center'}} >
-            <AccountCircleIcon/>
-            <Typography variant="body2" color="text.secondary">
+          <br/>
+          <Grid sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+            <Box sx={{display:'flex', alignItems:'center'}} >
+              <AccountCircleIcon/>
+              <Typography variant="body2" color="text.secondary">
                 {details.author}
+              </Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary" sx={{marginTop:'2rem', marginBottom:'1rem'}}>
+              {info.date}  {info.time}
             </Typography>
-          </Box>
-        
-        
+          </Grid>
+          
         </CardContent>
         <CardActions sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
           <Grid item xs={8} sx={{display:'flex', alignItems:'center', justifyContent:'flex-start', marginInlineStart:'-0.5rem'}}>
@@ -132,15 +148,16 @@ const Detail = () => {
                 <FavoriteIcon />
             </IconButton>
             <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.likes}</Typography>
-            <IconButton sx={{marginInlineStart:'1rem'}} aria-label="comment">
-                <ChatIcon />
+            <IconButton sx={{marginInlineStart:'0.5rem'}} aria-label="comment">
+                <ChatIcon onClick={()=>setCommentsOpened(!commentsOpened)}/>
             </IconButton>
-            {/* <Typography sx={{marginInlineStart:'-0.4rem'}}>{details[0].comments.length}</Typography> */}
+            <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.comments?.length}</Typography>
             <IconButton sx={{marginInlineStart:'.5rem'}} aria-label="visibility">
                 <VisibilityOutlinedIcon />
             </IconButton>
             <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.post_views}</Typography>
           </Grid>
+          { (currentUser === details.author) &&
           <Grid>
             <IconButton aria-label="edit" sx={{"&:hover": {color: 'green', scale:'1.2'}}} onClick={handleOpenUpdateModal}>
                 <EditIcon />
@@ -150,16 +167,27 @@ const Detail = () => {
                 <DeleteIcon />
             </IconButton>
           </Grid>
-          
-          
-        
+          }
         </CardActions>
+      </Card>
+     {
+      commentsOpened && (details.comments.map((comment) => (
+        <Grid sx={{marginTop: '1rem'}} item key={comment.id}>
+          <CommentsCard entry={comment} {...comment}/>
+        </Grid>
+      ))
         
-    </Card>
+      )
+    }
+    <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'33vw', marginBottom:'3rem'}}>
+        <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
+    </Grid>
     <UpdateModal open={openUpdateModal} handleClose={handleModalClose} info={info} setInfo={setInfo} />
+    
   </Container>
     
   )
 }
 
 export default Detail
+

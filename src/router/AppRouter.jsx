@@ -22,10 +22,10 @@ const AppRouter = () => {
             <Route path='/' element={<DashBoard/>}/>
             <Route path='/auth' element={<Auth authType={authType} setAuthType={setAuthType}/>}/>
             <Route path='/about' element={<About/>}/>
+            <Route path="/blogs/:id" element={<Detail />} />
             <Route path='' element={<PrivateRouter/>}>
               <Route path='/newblog' element={<NewBlog/>}/>
               <Route path='/myblogs' element={<MyBlogs/>}/>
-              <Route path="/blogs/:id" element={<Detail />} />
               <Route path='/profile' element={<Profile/>}/>
             </Route>
   

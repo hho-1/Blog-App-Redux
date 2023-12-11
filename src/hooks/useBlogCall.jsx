@@ -1,6 +1,6 @@
 //import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess } from "../features/blogSlice";
+import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess, getCommentsSuccess } from "../features/blogSlice";
 //import axios from "axios";
 //import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 import useAxios from "./useAxios";
@@ -21,6 +21,17 @@ const useBlogCall = () => {
         const { data } = await axiosWithPublic(`${BASE_URL}api/${url}/`);
         //console.log(data);
         dispatch(contributionsSuccess({ data, url })); // {data:data,url:url}
+      } catch (error) {
+        dispatch(fetchFail());
+      }
+    };
+    const getComments = async () => {
+      dispatch(fetchStart());
+      try {
+        const url = "comments";
+        const { data } = await axiosWithToken.get(`${BASE_URL}api/${url}/`);
+        //console.log(data);
+        dispatch(getCommentsSuccess({ data, url })); // {data:data,url:url}
       } catch (error) {
         dispatch(fetchFail());
       }
@@ -91,6 +102,7 @@ const useBlogCall = () => {
     getCategories,
     postBlogData,
     putBlogData,
+    getComments,
     deleteBlogData
     
   };

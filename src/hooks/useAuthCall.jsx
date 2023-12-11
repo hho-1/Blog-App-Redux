@@ -5,17 +5,21 @@ import {
   loginSuccess,
   logoutSuccess,
   registerSuccess,
+  userUpdateSuccess,
 } from "../features/authSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
+import useAxios from "./useAxios";
 
 const useAuthCall = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector(state => state.auth);
   //const { currentUser } = useSelector(state => state.auth);
+
+  const { axiosWithToken } = useAxios();
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -65,6 +69,7 @@ const useAuthCall = () => {
         userInfo
       );
       dispatch(registerSuccess(data));
+      //console.log(data);
       toastSuccessNotify("Register performed");
       navigate("/");
     } catch (err) {
@@ -78,8 +83,31 @@ const useAuthCall = () => {
       }
     }
   };
+  const getUser = async () => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosWithToken(`${BASE_URL}users/auth/user/`);
+      //console.log(data);
+      dispatch(userUpdateSuccess({ data })); // {data:data,url:url}
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
+  const putUserData = async (info) => {
+    dispatch(fetchStart())
+    try {
+      const data = await axiosWithToken.put(`/users/auth/user/`, info)
+      getUser()
+      toastSuccessNotify(`User successfully updated`)
+      dispatch(userUpdateSuccess({ data }));
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify('User can not be updated')
+      console.log(error)
+    }
+  }
 
-  return { login, register, logout };
+  return { login, register, logout, putUserData, getUser };
 };
 
 export default useAuthCall;
