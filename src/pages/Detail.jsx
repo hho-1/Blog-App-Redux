@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-//import useAxios from '../hooks/useAxios';
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -8,13 +7,11 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import axios from 'axios';
-//import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import UpdateModal from '../components/blog/BlogUpdateModal';
 import useBlogCall from '../hooks/useBlogCall';
 import CommentsCard from '../components/blog/CommentsCard';
-//import useBlogCall from '../hooks/useBlogCall';
+
 
 const Detail = () => {
 
@@ -172,14 +169,14 @@ const Detail = () => {
       </Card>
      {
       commentsOpened && (details.comments.map((comment) => (
-        <Grid sx={{marginTop: '1rem'}} item key={comment.id}>
+        <Grid  item key={comment.id} sx={{marginTop: '1rem'}}>
           <CommentsCard entry={comment} {...comment}/>
         </Grid>
       ))
         
       )
     }
-    <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'33vw', marginBottom:'3rem'}}>
+    <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'27vw', marginBottom:'3rem'}}>
         <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
     </Grid>
     <UpdateModal open={openUpdateModal} handleClose={handleModalClose} info={info} setInfo={setInfo} />
@@ -188,6 +185,8 @@ const Detail = () => {
     
   )
 }
+
+//'&:nth-child(odd)':{backgroundColor:'beige'}
 
 export default Detail
 

@@ -10,7 +10,6 @@ import PrivateRouter from './PrivateRouter'
 import MyBlogs from '../pages/MyBlogs'
 import Profile from '../pages/Profile'
 import Detail from '../pages/Detail'
-
 const AppRouter = () => {
 
   const [authType, setAuthType] = useState('login')
@@ -18,6 +17,7 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
         <Navbar authType={authType} setAuthType={setAuthType}/>
+        
         <Routes>
             <Route path='/' element={<DashBoard/>}/>
             <Route path='/auth' element={<Auth authType={authType} setAuthType={setAuthType}/>}/>

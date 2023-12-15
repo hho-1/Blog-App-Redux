@@ -1,9 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Container, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
 import ImgMediaCard from '../components/blog/Card';
+import CategoryBar from '../components/categoryBar';
+
+
 
 const DashBoard = () => {
 
@@ -19,8 +22,15 @@ const { contributions } = useSelector(state => state.blog);
     
   }, []);
 
+  const [buttonName, setButtonName] = useState('all')
+  const [isFiltered, setIsFiltered] = useState(false)
+
+
   return (
+    <>
+    <CategoryBar setButtonName={setButtonName } setIsFiltered={setIsFiltered}/>
     <Container sx={{height:'fit-content', minHeight:'82vh', marginBottom:'2rem'}}>
+      
       <Grid
         container
         alignItems="center"
@@ -28,14 +38,22 @@ const { contributions } = useSelector(state => state.blog);
         justifyContent="center"
         spacing={3}
         mt={3}>
-        {contributions?.map(entry => (
-          <Grid item key={entry.id}>
-            <ImgMediaCard entry={entry} {...entry}/>
-          </Grid>
-        ))}
+        {isFiltered ? (contributions.filter((blog) => {
+                return blog.category_name === buttonName;
+              }).map((filteredEntry, index) => {return <ImgMediaCard key={index} {...filteredEntry}/>})
+            ) 
+            : 
+            (
+              contributions.map((blog, index) => {
+                
+                return <ImgMediaCard key={index} {...blog}/>
+              })
+            )
+        }
       </Grid>
 
     </Container>
+    </>
   )
 }
 

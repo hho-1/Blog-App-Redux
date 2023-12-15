@@ -1,6 +1,10 @@
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
+import { Box, Card, CardActions, CardContent, Grid, IconButton, Typography } from '@mui/material'
 import React from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+//import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+//import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 
 const CommentsCard = ({commentTitle, content, time_stamp, user}) => {
 
@@ -9,7 +13,7 @@ const CommentsCard = ({commentTitle, content, time_stamp, user}) => {
     const time = time_stamp.slice(11,19)
     //console.log(time);
   return (
-    <Card sx={{ width: 645, height: 'fitContent', mx:'auto', backgroundColor: 'beige'}}>
+    <Card sx={{ width: 645, height: 'fitContent', mx:'auto', backgroundColor:'beige'}}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" sx={{}}>
               {commentTitle}
@@ -31,18 +35,31 @@ const CommentsCard = ({commentTitle, content, time_stamp, user}) => {
               {content}
             </p>
             <Grid sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                <Box sx={{display:'flex', alignItems:'center'}} >
+                <Box>
+                  <Box sx={{display:'flex', alignItems:'center', marginTop:'2rem'}} >
                     <AccountCircleIcon/>
                     <Typography variant="body2" color="text.secondary">
                         {user}
                     </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" sx={{marginTop:'2rem', marginBottom:'1rem'}}>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary" sx={{marginTop:'1rem', marginBottom:'-1rem'}}>
                     {date}  {time}
-                </Typography>
+                  </Typography>
+                </Box>
+                <CardActions>
+                  <IconButton>
+                    <ThumbUpOffAltIcon/>
+                  </IconButton>
+                    <Typography sx={{marginInlineStart:'-0.4rem'}}>0</Typography>
+                  <IconButton>
+                    <ThumbDownOffAltIcon/>
+                  </IconButton>
+                  <Typography sx={{marginInlineStart:'-2rem'}}>0</Typography>
+                </CardActions>
             </Grid>
           
         </CardContent>
+        
         
         </Card>
   )

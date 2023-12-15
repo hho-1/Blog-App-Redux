@@ -30,12 +30,12 @@ const { postBlogData } = useBlogCall();
 
 
   const handleChange = (e) => {
-    
     setInfo({ ...info, [e.target.name]: (e.target.value) });
   };
+
   const handleSubmit = e => {
     e.preventDefault();
-    //console.log(info);
+    console.log(info);
 
     postBlogData("blogs", info);
 
@@ -50,9 +50,10 @@ const { postBlogData } = useBlogCall();
 
   const status = ["d", "p"]
 
+
   return (
-    <Container sx={{height:'75vh'}} >
-      <Box sx={{width: 450, margin: 'auto', marginTop:'5rem'}}>
+    <Container sx={{height:'80vh'}} >
+      <Box sx={{width: 550, margin: 'auto', marginTop:'5rem'}}>
           
           <Box component="form" onSubmit={handleSubmit}>
           <Typography sx={{marginBottom: 4, textAlign:'center'}} variant='h4' >
@@ -92,7 +93,7 @@ const { postBlogData } = useBlogCall();
                 ))}
             </Select>
         </FormControl>
-        <FormControl fullWidth sx={{marginTop:1}}>
+        <FormControl fullWidth sx={{marginTop:1, marginBottom: '1rem'}}>
             <InputLabel id="status">Status</InputLabel>
             <Select
               labelId="status"
@@ -108,19 +109,18 @@ const { postBlogData } = useBlogCall();
             </Select>
         </FormControl>
         <TextField
-          sx={{marginTop:1, width:450}}
-          id="content"
-          label="Content"
-          name="content"
-          multiline
-          rows={2}
-          value={info?.content}
-          onChange={handleChange}
-          required
-          
+            sx={{marginTop:1, width:550}}
+            id="content"
+            label="Content"
+            name="content"
+            multiline
+            rows={5}
+            value={info?.content}
+            onChange={handleChange}
+            required
         />
-      
-        <Button color="primary" onSubmit={handleSubmit} variant="contained" fullWidth type="submit" sx={{marginTop: 3, "&:hover": {backgroundColor:'#57c1ff'}}}>
+        
+        <Button color="primary" onClick={handleSubmit} variant="contained" fullWidth type="submit" sx={{marginTop: 3, "&:hover": {backgroundColor:'#57c1ff'}}}>
           Add Blog
         </Button>
         
