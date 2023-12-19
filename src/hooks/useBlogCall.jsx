@@ -29,7 +29,7 @@ const useBlogCall = () => {
       dispatch(fetchStart());
       try {
         const url = "comments";
-        const { data } = await axiosWithToken.get(`${BASE_URL}api/${url}/`);
+        const { data } = await axiosWithPublic.get(`${BASE_URL}api/${url}/`);
         //console.log(data);
         dispatch(getCommentsSuccess({ data, url })); // {data:data,url:url}
       } catch (error) {
@@ -40,7 +40,7 @@ const useBlogCall = () => {
       dispatch(fetchStart());
       try {
         const url = "categories";
-        const { data } = await axiosWithToken.get(`${BASE_URL}api/${url}/`);
+        const { data } = await axiosWithPublic.get(`${BASE_URL}api/${url}/`);
         //console.log(data);
         dispatch(getCategoriesSuccess({ data, url })); // {data:data,url:url}
       } catch (error) {

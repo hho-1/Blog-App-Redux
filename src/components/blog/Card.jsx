@@ -32,7 +32,7 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
     }
     
   return (
-    <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
+    <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between', margin:'1rem' }}>
       <CardMedia
         component="img"
         alt={title}
