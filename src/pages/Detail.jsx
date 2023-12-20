@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import UpdateModal from '../components/blog/BlogUpdateModal';
 import useBlogCall from '../hooks/useBlogCall';
 import CommentsCard from '../components/blog/CommentsCard';
+import AddCommentForm from '../components/blog/AddCommentForm';
 
 
 const Detail = () => {
@@ -51,11 +52,11 @@ const Detail = () => {
 
     const { deleteBlogData, getComments } = useBlogCall()
     
-    
 
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
     const handleOpenUpdateModal = () => setOpenUpdateModal(true);
-    
+
     const handleModalClose = () => {
       
       setOpenUpdateModal(false);
@@ -91,13 +92,43 @@ const Detail = () => {
         
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+//-------------------------------------------------------------------------------
+    
+    const [commentsInfo, setCommentsInfo] = useState({
+      title: "",
+      content: "",
+      nickname: "",
+      status: ""
+    })
     const [commentsOpened, setCommentsOpened] = useState(false)
+
+    const [addCommentsOpened, setAddCommentsOpened] = useState(false)
+
+    const handleAddCommentClose = () => {
+      
+      setAddCommentsOpened(false);
+      setCommentsInfo({
+        title: "",
+        content: "",
+        nickname: "",
+        status: ""
+      });
+    };
+
+    const handleWriteCommentOpen = () => {
+      if(currentUser){
+        setAddCommentsOpened(!addCommentsOpened)
+      }
+      else{
+        navigate('/auth')
+      }
+      
+    }
 
 
   return (
     <Container sx={{minHeight:'80vh'}}>
-      <Card sx={{ width: 745, height: 700, display:'flex', flexDirection:'column', justifyContent:'space-between', mx:'auto', marginTop: '2rem', backgroundColor:'#faf2dd' }}>
+      <Card sx={{ width: 745, height: 700, display:'block', mx:'auto', marginTop: '2rem', backgroundColor:'#faf3e5' }}>
         <CardMedia
           component="img"
           alt={details.title}
@@ -105,7 +136,7 @@ const Detail = () => {
           sx={{width:'fit-content', margin:'auto', marginTop:'0.5rem', marginBottom:'-2rem'}}
           image={details.image}
         />
-        <CardContent sx={{marginTop:'1rem'}}>
+        <CardContent sx={{marginTop:'2rem', height: 390, display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
           <Typography gutterBottom variant="h5" component="div" sx={{textAlign:'center'}}>
             {details.title}
           </Typography>
@@ -121,11 +152,10 @@ const Detail = () => {
             fontSize:'0.875rem',
             lineHeight: 1.43,
             letterSpacing: "0.01071em",
-            marginTop:'1.0rem'
+            marginTop:'0.7rem'
           }}>
             {details.content}
           </p>
-          <br/>
           <Grid sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
             <Box sx={{display:'flex', alignItems:'center'}} >
               <AccountCircleIcon/>
@@ -139,34 +169,42 @@ const Detail = () => {
           </Grid>
           
         </CardContent>
-        <CardActions sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-          <Grid item xs={8} sx={{display:'flex', alignItems:'center', justifyContent:'flex-start', marginInlineStart:'-0.5rem'}}>
+        <CardActions sx={{display:'flex', alignItems:'baseline', justifyContent:'space-between'}}>
+          <Grid item xs={8} sx={{width: '8rem', display:'flex', alignItems:'center', justifyContent:'flex-start'}}>
             <IconButton onClick={handleLikeClick} aria-label="add to favorites">
                 <FavoriteIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.likes}</Typography>
-            <IconButton sx={{marginInlineStart:'0.5rem'}} aria-label="comment">
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details.likes}</Typography>
+            <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment">
                 <ChatIcon onClick={()=>setCommentsOpened(!commentsOpened)}/>
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.comments?.length}</Typography>
-            <IconButton sx={{marginInlineStart:'.5rem'}} aria-label="visibility">
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details.comments?.length}</Typography>
+            <IconButton sx={{marginLeft:'.5rem'}} aria-label="visibility">
                 <VisibilityOutlinedIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{details.post_views}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details.post_views}</Typography>
+          </Grid>
+          <Grid>
+            <Button onClick={handleWriteCommentOpen} size="medium" variant='contained' sx={{marginBottom:'1.2rem', backgroundColor:'#0068e3', color:'white', "&:hover": {backgroundColor: '#4290f0', color:'#ffcd44'}}}>
+              Write Comment
+            </Button>
           </Grid>
           { (currentUser === details.author) &&
-          <Grid>
-            <IconButton aria-label="edit" sx={{"&:hover": {color: 'green', scale:'1.2'}}} onClick={handleOpenUpdateModal}>
+          <Grid sx={{width: '8rem'}}>
+            <IconButton aria-label="edit" sx={{ marginBottom:'1rem', "&:hover": {color: 'green', scale:'1.2'}}} onClick={handleOpenUpdateModal}>
                 <EditIcon />
             </IconButton>
             
-            <IconButton onClick={() => deleteBlogData("blogs", id)} sx={{marginInlineStart:'1rem', "&:hover": {color: 'red', scale:'1.2'} }} aria-label="delete">
+            <IconButton onClick={() => deleteBlogData("blogs", id)} sx={{marginBottom:'.8rem', marginInlineStart:'1rem', "&:hover": {color: 'red', scale:'1.2'} }} aria-label="delete">
                 <DeleteIcon />
             </IconButton>
           </Grid>
           }
         </CardActions>
       </Card>
+      {
+        addCommentsOpened && <AddCommentForm commentsInfo={commentsInfo} setCommentsInfo={setCommentsInfo} handleAddCommentClose={handleAddCommentClose}/>
+      }
      {
       commentsOpened && (details.comments.map((comment) => (
         <Grid  item key={comment.id} sx={{marginTop: '1rem'}}>

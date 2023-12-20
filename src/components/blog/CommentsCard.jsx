@@ -6,12 +6,14 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 //import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 
-const CommentsCard = ({commentTitle, content, time_stamp, user}) => {
+const CommentsCard = ({commentTitle, content, time_stamp, user, likes_num, dislikes_num}) => {
 
     const date = time_stamp.slice(0,10)
     //console.log(date);
     const time = time_stamp.slice(11,19)
     //console.log(time);
+
+    
   return (
     <Card sx={{ width: 645, height: 'fitContent', mx:'auto', backgroundColor:'beige'}}>
           <CardContent>
@@ -47,14 +49,14 @@ const CommentsCard = ({commentTitle, content, time_stamp, user}) => {
                   </Typography>
                 </Box>
                 <CardActions>
-                  <IconButton>
+                  <IconButton sx={{marginRight:'-0.3rem'}}>
                     <ThumbUpOffAltIcon/>
                   </IconButton>
-                    <Typography sx={{marginInlineStart:'-0.4rem'}}>0</Typography>
-                  <IconButton>
+                    <Typography >0</Typography>
+                  <IconButton sx={{marginRight:'-0.7rem'}}>
                     <ThumbDownOffAltIcon/>
                   </IconButton>
-                  <Typography sx={{marginInlineStart:'-2rem'}}>0</Typography>
+                  <Typography>0</Typography>
                 </CardActions>
             </Grid>
           
