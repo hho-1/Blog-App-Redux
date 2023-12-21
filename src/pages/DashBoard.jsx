@@ -10,14 +10,17 @@ import CategoryBar from '../components/categoryBar';
 
 const DashBoard = () => {
 
-  //const [data, setData] = useState([])
-const { contributions } = useSelector(state => state.blog);
+  const { contributions } = useSelector(state => state.blog);
+
   const { getContributions } = useBlogCall();
+  const { getCategories } = useBlogCall();
+
   
 
   useEffect(() => {
     
     getContributions();
+    getCategories()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     
   }, []);
@@ -25,7 +28,7 @@ const { contributions } = useSelector(state => state.blog);
   const [buttonName, setButtonName] = useState('all')
   const [isFiltered, setIsFiltered] = useState(false)
 
-
+  //console.log(contributions);
   return (
     <>
     <CategoryBar setButtonName={setButtonName } setIsFiltered={setIsFiltered}/>

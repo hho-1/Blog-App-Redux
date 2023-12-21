@@ -27,7 +27,7 @@ const useAuthCall = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axios.post(
-        `${BASE_URL}users/auth/login/`,
+        `${BASE_URL}/auth/login`,
         userInfo
       );
       dispatch(loginSuccess(data));
@@ -47,7 +47,7 @@ const useAuthCall = () => {
       // let headers = {
       //   Authorization: `Token ${token}`,
       // };
-      await axios.post(`${BASE_URL}users/auth/logout/`, null, {
+      await axios.post(`${BASE_URL}/auth/logout/`, null, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -65,7 +65,7 @@ const useAuthCall = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axios.post(
-        `${BASE_URL}users/register/`,
+        `${BASE_URL}/register/`,
         userInfo
       );
       dispatch(registerSuccess(data));
@@ -86,7 +86,7 @@ const useAuthCall = () => {
   const getUser = async () => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosWithToken(`${BASE_URL}users/auth/user/`);
+      const { data } = await axiosWithToken(`${BASE_URL}/auth/user/`);
       //console.log(data);
       dispatch(userUpdateSuccess({ data })); // {data:data,url:url}
     } catch (error) {
@@ -96,7 +96,7 @@ const useAuthCall = () => {
   const putUserData = async (info) => {
     dispatch(fetchStart())
     try {
-      const data = await axiosWithToken.put(`/users/auth/user/`, info)
+      const data = await axiosWithToken.put('/auth/user/', info)
       getUser()
       toastSuccessNotify(`User successfully updated`)
       dispatch(userUpdateSuccess({ data }));

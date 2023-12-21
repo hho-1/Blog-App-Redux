@@ -6,11 +6,11 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 //import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 
-const CommentsCard = ({commentTitle, content, time_stamp, user, likes_num, dislikes_num}) => {
+const CommentsCard = ({commentTitle, content, publish_date, likes_num, dislikes_num, nickname}) => {
 
-    const date = time_stamp.slice(0,10)
+    const date = publish_date.slice(0,10)
     //console.log(date);
-    const time = time_stamp.slice(11,19)
+    const time = publish_date.slice(11,19)
     //console.log(time);
 
     const [thumbsUpClicked, setThumbsUpClicked] = useState(false)
@@ -63,7 +63,7 @@ const CommentsCard = ({commentTitle, content, time_stamp, user, likes_num, disli
                   <Box sx={{display:'flex', alignItems:'center', marginTop:'2rem'}} >
                     <AccountCircleIcon/>
                     <Typography variant="body2" color="text.secondary">
-                        {user}
+                        {nickname}
                     </Typography>
                   </Box>
                   <Typography variant="body2" color="text.secondary" sx={{marginTop:'1rem', marginBottom:'-1rem'}}>

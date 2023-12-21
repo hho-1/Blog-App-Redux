@@ -13,21 +13,25 @@ const MyBlogs = () => {
   const [myBlogs, setMyBlogs] = useState([])
   
   const { contributions } = useSelector(state => state.blog);
+  const { users } = useSelector(state => state.blog);
 
-  const { getContributions } = useBlogCall();
+  const { getContributions, getUsers } = useBlogCall();
 
   let navigate = useNavigate()
 
   useEffect(() => {
     
     getContributions();
+    getUsers()
 
-    const data = contributions.filter(function(entry){
-      return entry.author === currentUser              //"muhittin"
+    const data = users.filter(function(user){
+      return user.username === currentUser              //"testUser1"
     })
-    // console.log(data);
-    setMyBlogs(data)
-    //console.log(myBlogs);
+    //console.log(users);
+    const blogs = contributions.filter((blog) => {return blog.user_id === data[0]._id})
+    //console.log(data);
+    setMyBlogs(blogs)
+    console.log(myBlogs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     
@@ -47,11 +51,11 @@ const MyBlogs = () => {
             <ImgMediaCard entry={item} {...item}/>
           </Grid>
         ))}
-        <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'14vw', marginBottom:'3rem'}}>
-          <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
-        </Grid>
+        
       </Grid>
-
+      <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'27vw', marginBottom:'3rem'}}>
+        <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
+      </Grid>
     </Container>
   )
 }

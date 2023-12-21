@@ -48,9 +48,9 @@ const Detail = () => {
     const [details, setDetails] = useState("");
 
     const { contributions } = useSelector(state => state.blog);
-    //const { comments } = useSelector(state => state.blog);
+    const { users } = useSelector(state => state.blog);
 
-    const { deleteBlogData, getComments } = useBlogCall()
+    const { deleteBlogData, getComments, getUsers } = useBlogCall()
     
 
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -69,36 +69,45 @@ const Detail = () => {
       });
     };
 
+    const [username, setUsername] = useState("")
+
 
     useEffect(() => {        //axios ile setDetails birlikte useEffect disinda olursa sonsuz döngü olur
         
-        const data = contributions.filter((item) => {return item.id === Number(id)})
+        const data = contributions.filter((item) => {return item.id === id})
         setDetails(data[0])
         //console.log(data);
 
+        const username = users.filter((user) => {return user._id === data[0].user_id})
+        setUsername(username[0]?.username);
+
         getComments()
+        getUsers()
 
         setInfo({
-          id: data[0].id,
-          title: data[0].title,
-          image: data[0].image,
-          category: data[0].category,
-          status: data[0].status,
-          content: data[0].content,
-          comments: data[0].comments,
-          date: data[0].publish_date.slice(0,10),
-          time: data[0].publish_date.slice(11,19)
+          id: data[0]?.id,
+          title: data[0]?.title,
+          image: data[0]?.image,
+          category: data[0]?.category,
+          status: data[0]?.status,
+          content: data[0]?.content,
+          comments: data[0]?.comments,
+          date: data[0]?.publish_date.slice(0,10),
+          time: data[0]?.publish_date.slice(11,19),
         });
         
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 //-------------------------------------------------------------------------------
+
     
+
     const [commentsInfo, setCommentsInfo] = useState({
+      contribution_id: id,
       title: "",
       content: "",
       nickname: "",
-      status: ""
+      status_id: ""
     })
     const [commentsOpened, setCommentsOpened] = useState(false)
 
@@ -108,10 +117,11 @@ const Detail = () => {
       
       setAddCommentsOpened(false);
       setCommentsInfo({
+        contribution_id: id,
         title: "",
         content: "",
         nickname: "",
-        status: ""
+        status_id: ""
       });
     };
 
@@ -131,14 +141,14 @@ const Detail = () => {
       <Card sx={{ width: 745, height: 700, display:'block', mx:'auto', marginTop: '2rem', backgroundColor:'#faf3e5' }}>
         <CardMedia
           component="img"
-          alt={details.title}
+          alt={details?.title}
           height="250"
           sx={{width:'fit-content', margin:'auto', marginTop:'0.5rem', marginBottom:'-2rem'}}
-          image={details.image}
+          image={details?.image}
         />
         <CardContent sx={{marginTop:'2rem', height: 390, display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
           <Typography gutterBottom variant="h5" component="div" sx={{textAlign:'center'}}>
-            {details.title}
+            {details?.title}
           </Typography>
           <p style={{
             fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -154,17 +164,17 @@ const Detail = () => {
             letterSpacing: "0.01071em",
             marginTop:'0.7rem'
           }}>
-            {details.content}
+            {details?.content}
           </p>
           <Grid sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
             <Box sx={{display:'flex', alignItems:'center'}} >
               <AccountCircleIcon/>
               <Typography variant="body2" color="text.secondary">
-                {details.author}
+                {username}
               </Typography>
             </Box>
             <Typography variant="body2" color="text.secondary" sx={{marginTop:'2rem', marginBottom:'1rem'}}>
-              {info.date}  {info.time}
+              {info?.date}  {info?.time}
             </Typography>
           </Grid>
           
@@ -182,22 +192,22 @@ const Detail = () => {
                   <FavoriteIcon />
                 </IconButton>)
             }
-            <Typography sx={{marginLeft:'-0.4rem'}}>{details.likes}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details?.likes}</Typography>
             <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment">
                 <ChatIcon onClick={()=>setCommentsOpened(!commentsOpened)}/>
             </IconButton>
-            <Typography sx={{marginLeft:'-0.4rem'}}>{details.comments?.length}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details?.comments?.length}</Typography>
             <IconButton sx={{marginLeft:'.5rem'}} aria-label="visibility">
                 <VisibilityOutlinedIcon />
             </IconButton>
-            <Typography sx={{marginLeft:'-0.4rem'}}>{details.post_views}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details?.post_views}</Typography>
           </Grid>
           <Grid>
             <Button onClick={handleWriteCommentOpen} size="medium" variant='contained' sx={{marginBottom:'1.2rem', backgroundColor:'#0068e3', color:'white', "&:hover": {backgroundColor: '#4290f0', color:'#ffcd44'}}}>
               Write Comment
             </Button>
           </Grid>
-          { (currentUser === details.author) &&
+          { (currentUser === username) &&
           <Grid sx={{width: '8rem'}}>
             <IconButton aria-label="edit" sx={{ marginBottom:'1rem', "&:hover": {color: 'green', scale:'1.2'}}} onClick={handleOpenUpdateModal}>
                 <EditIcon />
@@ -214,7 +224,7 @@ const Detail = () => {
         addCommentsOpened && <AddCommentForm commentsInfo={commentsInfo} setCommentsInfo={setCommentsInfo} handleAddCommentClose={handleAddCommentClose}/>
       }
      {
-      commentsOpened && (details.comments.map((comment) => (
+      commentsOpened && (details?.comments?.map((comment) => (
         <Grid  item key={comment.id} sx={{marginTop: '1rem'}}>
           <CommentsCard entry={comment} {...comment}/>
         </Grid>

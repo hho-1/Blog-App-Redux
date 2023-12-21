@@ -9,7 +9,8 @@ const blogSlice = createSlice({
     contributions: [],
     comments: [],
     categories: [],
-    status: []
+    status: [],
+    users: []
 
   },
   reducers: {
@@ -29,6 +30,14 @@ const blogSlice = createSlice({
       state.loading = false;
       state.categories = payload.data;
     },
+    getUsersSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.users = payload.data;
+    },
+    getStatusSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.status = payload.data;
+    },
     
     fetchFail: state => {
       state.loading = false;
@@ -42,7 +51,9 @@ export const {
   contributionsSuccess,
   getCategoriesSuccess,
   getCommentsSuccess,
+  getUsersSuccess,
   getBlogSuccess,
+  getStatusSuccess,
   fetchFail,
 } = blogSlice.actions;
 export default blogSlice.reducer;

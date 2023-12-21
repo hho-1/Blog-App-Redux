@@ -1,16 +1,31 @@
 import { Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import useBlogCall from '../../hooks/useBlogCall';
+import { useSelector } from 'react-redux';
+
 
 const AddCommentForm = ({commentsInfo, setCommentsInfo, handleAddCommentClose}) => {
 
-    const status = ["d", "p"]
+    //const status = ["d", "p"]
 
-    const { postBlogData } = useBlogCall();
+    const { status } = useSelector(state => state.blog)
+
+    const { postBlogData, getStatus } = useBlogCall();
+
+    //console.log(status);
+    
+    useEffect(() => {
+      getStatus()
+
+      const statusData = status.map((stat) => {return stat.id})
+      console.log(statusData);
+      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+    
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setCommentsInfo({ ...commentsInfo, [name]: (value) })
+        setCommentsInfo({ ...commentsInfo, [e.target.name]: e.target.value })
     }
     const handleSubmitComment = (e) => {
         e.preventdefault()
@@ -18,13 +33,13 @@ const AddCommentForm = ({commentsInfo, setCommentsInfo, handleAddCommentClose}) 
 
         console.log(commentsInfo);
 
-        postBlogData("blogs", commentsInfo);
+        postBlogData("comments", commentsInfo);
 
         setCommentsInfo({
             title: "",
             content: "",
             nickname: "",
-            status: ""
+            status_id: ""
           });
     }
 
@@ -52,16 +67,16 @@ const AddCommentForm = ({commentsInfo, setCommentsInfo, handleAddCommentClose}) 
                 required
             /> 
             <FormControl fullWidth sx={{marginTop:1}}>
-                <InputLabel id="category">Status</InputLabel>
+                <InputLabel id="status">Status</InputLabel>
                 <Select
                   labelId="status"
                   id="status"
                   name="status_id"
-                  value={commentsInfo?.status_id || ""}
+                  value={commentsInfo.status_id || ""}
                   label="Status"
                   required
                   onChange={handleChange}>
-                    {status?.map(item => (
+                    {status.map(item => (
                       <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
                     ))}
                 </Select>

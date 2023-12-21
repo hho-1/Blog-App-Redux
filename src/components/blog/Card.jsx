@@ -11,13 +11,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import useBlogCall from '../../hooks/useBlogCall';
 
 
-export default function ImgMediaCard({id, publish_date, title, image, content, author, likes, comments, post_views}) {
+export default function ImgMediaCard({id, createdAt, title, image, content, user_id, likes, comments, post_views}) {
 
-    const date = publish_date.slice(0,10)
+    const date = createdAt?.slice(0,10)
     //console.log(date);
-    const time = publish_date.slice(11,19)
+    const time = createdAt?.slice(11,19)
     //console.log(time);
 
     let navigate = useNavigate()
@@ -30,6 +32,21 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
       else if(!likeClicked) likes = likes - 1
       
     }
+
+    const { users } = useSelector(state => state.blog);
+
+    const { getContributions, getUsers } = useBlogCall();
+
+
+  React.useEffect(() => {
+    
+    getContributions();
+    getUsers()
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+   
+  const username = users.filter((user) => {return user._id === user_id}).map((user) => {return user.username})
     
   return (
     <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between', margin:'1rem' }}>
@@ -66,7 +83,7 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
         <Box sx={{display:'flex', alignItems:'center'}} >
             <AccountCircleIcon/>
             <Typography variant="body2" color="text.secondary">
-                {author}
+                {username}
             </Typography>
         </Box>
         
@@ -76,9 +93,9 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
         <Grid item xs={8} sx={{display:'flex', alignItems:'center', justifyContent:'flex-start', marginInlineStart:'-0.5rem'}}>
             {
               likeClicked ? (<IconButton aria-label="add to favorites" sx={{color:'red'}} onClick={handleLikeClick}>
-                <FavoriteIcon />
-            </IconButton>) : (<IconButton aria-label="add to favorites" onClick={handleLikeClick}>
-                <FavoriteIcon />
+                <FavoriteIcon/>
+            </IconButton>) : (<IconButton aria-label="add to favorites"  onClick={handleLikeClick}>
+                <FavoriteIcon/>
             </IconButton>
             )
             }
@@ -87,14 +104,14 @@ export default function ImgMediaCard({id, publish_date, title, image, content, a
             <IconButton aria-label="add to favorites">
                 <ChatIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{comments.length}</Typography>
+            <Typography sx={{marginInlineStart:'-0.4rem'}}>{comments?.length}</Typography>
             <IconButton aria-label="add to favorites">
                 <VisibilityOutlinedIcon />
             </IconButton>
             <Typography sx={{marginInlineStart:'-0.4rem'}}>{post_views}</Typography>
         </Grid>
         <Grid item xs={4}>
-            <Button size="small" onClick={()=>navigate("/blogs/" + id)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Read More</Button>
+            <Button onClick={()=>navigate("/blogs/" + id)} size="small" variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Read More</Button>
         </Grid>
         
       </CardActions>

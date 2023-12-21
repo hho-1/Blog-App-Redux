@@ -28,7 +28,7 @@ const CategoryBar = ({setButtonName, setIsFiltered}) => {
 
   return (
     <div>
-        <header id="header-3" class="header">
+        <header id="header-3" className="header">
           <nav className="header-nav">
             
             <ul className="menu">
