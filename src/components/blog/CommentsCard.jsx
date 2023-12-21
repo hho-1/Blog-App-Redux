@@ -1,10 +1,10 @@
 import { Box, Card, CardActions, CardContent, Grid, IconButton, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-//import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-//import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+//import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+//import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 
 const CommentsCard = ({commentTitle, content, time_stamp, user, likes_num, dislikes_num}) => {
 
@@ -12,6 +12,28 @@ const CommentsCard = ({commentTitle, content, time_stamp, user, likes_num, disli
     //console.log(date);
     const time = time_stamp.slice(11,19)
     //console.log(time);
+
+    const [thumbsUpClicked, setThumbsUpClicked] = useState(false)
+    const [thumbsDownClicked, setThumbsDownClicked] = useState(false)
+
+    const handleThumbsUpButtonClick = () => {
+      setThumbsUpClicked(!thumbsUpClicked)
+      if(thumbsDownClicked){
+        setThumbsDownClicked(false) 
+        dislikes_num -= 1}  
+
+      thumbsUpClicked ? (likes_num += 1) : (likes_num -= 1)
+    }
+
+    const handleThumbsDownButtonClick = () => {
+      setThumbsDownClicked(!thumbsDownClicked)
+
+      if(thumbsUpClicked){
+        setThumbsUpClicked(false) 
+        likes_num -= 1}
+
+      thumbsDownClicked ? (dislikes_num += 1) : (dislikes_num -= 1)
+    }
 
     
   return (
@@ -49,14 +71,34 @@ const CommentsCard = ({commentTitle, content, time_stamp, user, likes_num, disli
                   </Typography>
                 </Box>
                 <CardActions>
-                  <IconButton sx={{marginRight:'-0.3rem'}}>
-                    <ThumbUpOffAltIcon/>
-                  </IconButton>
-                    <Typography >0</Typography>
-                  <IconButton sx={{marginRight:'-0.7rem'}}>
-                    <ThumbDownOffAltIcon/>
-                  </IconButton>
-                  <Typography>0</Typography>
+                  {
+                    thumbsUpClicked ? (
+                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.3rem', color:'green'}}>
+                        <ThumbUpAltIcon/>
+                      </IconButton>
+                    ):
+                    (
+                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.3rem'}}>
+                        <ThumbUpAltIcon/>
+                      </IconButton>
+                    )
+                  }
+                  
+                  <Typography>{likes_num}</Typography>
+                  {
+                    thumbsDownClicked ? (
+                      <IconButton onClick={handleThumbsDownButtonClick} sx={{marginRight:'-0.7rem', color:'red'}}>
+                        <ThumbDownAltIcon/>
+                      </IconButton>
+                    ) 
+                    : (
+                      <IconButton onClick={handleThumbsDownButtonClick} sx={{marginRight:'-0.7rem'}}>
+                        <ThumbDownAltIcon/>
+                      </IconButton>
+                    )
+                  }
+                  
+                  <Typography>{dislikes_num}</Typography>
                 </CardActions>
             </Grid>
           

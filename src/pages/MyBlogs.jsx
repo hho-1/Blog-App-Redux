@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Grid } from '@mui/material'
+import { Button, Container, Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
 import ImgMediaCard from '../components/blog/Card';
+import { useNavigate } from 'react-router-dom';
 
 const MyBlogs = () => {
 
@@ -14,6 +15,8 @@ const MyBlogs = () => {
   const { contributions } = useSelector(state => state.blog);
 
   const { getContributions } = useBlogCall();
+
+  let navigate = useNavigate()
 
   useEffect(() => {
     
@@ -44,6 +47,9 @@ const MyBlogs = () => {
             <ImgMediaCard entry={item} {...item}/>
           </Grid>
         ))}
+        <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'14vw', marginBottom:'3rem'}}>
+          <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
+        </Grid>
       </Grid>
 
     </Container>

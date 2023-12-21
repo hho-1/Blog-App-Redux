@@ -171,9 +171,17 @@ const Detail = () => {
         </CardContent>
         <CardActions sx={{display:'flex', alignItems:'baseline', justifyContent:'space-between'}}>
           <Grid item xs={8} sx={{width: '8rem', display:'flex', alignItems:'center', justifyContent:'flex-start'}}>
-            <IconButton onClick={handleLikeClick} aria-label="add to favorites">
-                <FavoriteIcon />
-            </IconButton>
+            {
+              likeClicked ? (
+                <IconButton sx={{color:'red'}} onClick={handleLikeClick} aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>)
+                : 
+                (
+                <IconButton onClick={handleLikeClick} aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>)
+            }
             <Typography sx={{marginLeft:'-0.4rem'}}>{details.likes}</Typography>
             <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment">
                 <ChatIcon onClick={()=>setCommentsOpened(!commentsOpened)}/>
