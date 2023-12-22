@@ -10,45 +10,61 @@ const NewBlog = () => {
   const { categories } = useSelector(state => state.blog);
   const { getCategories } = useBlogCall();
 
-  const [info, setInfo] = useState({
-    title: "",
-    image: "",
-    category: 0,
-    status: "",
-    content: "",
-});
+  const { currentUser } = useSelector(state => state.auth);
+
+  
+
+const [userId, setUserId] = useState("")
 
 useEffect(() => {
   
   getCategories()
 
-  //console.log(categories);
+  getStatus()
+
+  const userGetData = users.filter((user) => {return user.username === currentUser})
+  
+  setUserId(userGetData[0].id);
+  //console.log(userId);
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
-const { postBlogData } = useBlogCall();
+  const [info, setInfo] = useState({
+    user_id: userId,
+    title: "",
+    image: "",
+    category_id: "",
+    status_id: "",
+    content: "",
+  });
 
+  const { postBlogData, getStatus } = useBlogCall();
 
+  const { status, users } = useSelector(state => state.blog)
+
+  
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: (e.target.value) });
+    setInfo({ ...info, [e.target.name]: (e.target.value), user_id: userId });
+    
   };
 
+  
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(info);
+    //console.log(info);
 
     postBlogData("blogs", info);
 
     setInfo({ 
+      user_id: userId,
       title: "",
       image: "",
-      category: "",
-      status: "",
+      category_id: "",
+      status_id: "",
       content: "" })
-
   };
 
-  const status = ["d", "p"]
+  //const status = ["d", "p"]
 
 
   return (
@@ -83,8 +99,8 @@ const { postBlogData } = useBlogCall();
             <Select
               labelId="category"
               id="category"
-              name="category"
-              value={info?.category || ""}
+              name="category_id"
+              value={info?.category_id || ""}
               label="Category"
               required
               onChange={handleChange}>
@@ -98,13 +114,13 @@ const { postBlogData } = useBlogCall();
             <Select
               labelId="status"
               id="status"
-              name="status"
-              value={info?.status || ""}
+              name="status_id"
+              value={info?.status_id || ""}
               required
               label="Status"
               onChange={handleChange}>
                 {status.map(item => (
-                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                  <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
                 ))}
             </Select>
         </FormControl>

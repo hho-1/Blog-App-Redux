@@ -8,19 +8,18 @@ import CategoryBar from '../components/categoryBar';
 
 
 
-const DashBoard = () => {
+const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, setLikesNum} */) => {
 
   const { contributions } = useSelector(state => state.blog);
 
-  const { getContributions } = useBlogCall();
-  const { getCategories } = useBlogCall();
+  const { getContributions, getCategories, getLikes } = useBlogCall();
 
-  
 
   useEffect(() => {
     
     getContributions();
     getCategories()
+    getLikes()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     
   }, []);
@@ -43,13 +42,13 @@ const DashBoard = () => {
         mt={3}>
         {isFiltered ? (contributions.filter((blog) => {
                 return blog.category_name === buttonName;
-              }).map((filteredEntry, index) => {return <ImgMediaCard key={index} {...filteredEntry}/>})
+              }).map((filteredEntry, index) => {return <ImgMediaCard key={index} {...filteredEntry} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} *//>})
             ) 
             : 
             (
               contributions.map((blog, index) => {
                 
-                return <ImgMediaCard key={index} {...blog}/>
+                return <ImgMediaCard key={index} {...blog} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} *//>
               })
             )
         }

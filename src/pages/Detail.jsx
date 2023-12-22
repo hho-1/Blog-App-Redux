@@ -18,21 +18,32 @@ const Detail = () => {
 
   const { currentUser } = useSelector(state => state.auth);
 
-  let navigate = useNavigate()
+  const { id } = useParams();
+    //console.log(id);
+
+  const { contributions } = useSelector(state => state.blog);
+
+  // const { getContributions } = useBlogCall();
+  // const { getCategories } = useBlogCall();
 
   const [info, setInfo] = useState({
+    id: "",
+    user_id: "",
     title: "",
     image: "",
-    category: 0,
-    status: "",
+    publish_date: "",
+    category_id: "",
+    status_id: "",
     content: "",
-    likes: 0,
-    comments: 0,
+    likes: [],
+    comments: [],
+    comment_count: 0,
     post_views: 0
   });
+  
 
-    const { id } = useParams();
-    //console.log(id);
+  let navigate = useNavigate()
+
 
     const [likeClicked, setLikeClicked] = React.useState(false)
 
@@ -42,12 +53,9 @@ const Detail = () => {
       else if(!likeClicked) info.likes -= 1
       
     }
-
-    //const { getContributions } = useBlogCall();
     
     const [details, setDetails] = useState("");
 
-    const { contributions } = useSelector(state => state.blog);
     const { users } = useSelector(state => state.blog);
 
     const { deleteBlogData, getComments, getUsers } = useBlogCall()
@@ -63,8 +71,8 @@ const Detail = () => {
       setInfo({
         title: "",
         image: "",
-        category: 0,
-        status: "",
+        category_id: "",
+        status_id: "",
         content: "",
       });
     };
@@ -88,13 +96,14 @@ const Detail = () => {
           id: data[0]?.id,
           title: data[0]?.title,
           image: data[0]?.image,
-          category: data[0]?.category,
-          status: data[0]?.status,
+          category_id: data[0]?.category_id,
+          status_id: data[0]?.status_id,
           content: data[0]?.content,
           comments: data[0]?.comments,
           date: data[0]?.publish_date.slice(0,10),
           time: data[0]?.publish_date.slice(11,19),
         });
+        
         
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -104,10 +113,12 @@ const Detail = () => {
 
     const [commentsInfo, setCommentsInfo] = useState({
       contribution_id: id,
-      title: "",
       content: "",
-      nickname: "",
-      status_id: ""
+      title: "",
+      username: currentUser,
+      publish_date: "",
+      likes_num: [],
+      dislikes_num: []
     })
     const [commentsOpened, setCommentsOpened] = useState(false)
 
@@ -120,8 +131,7 @@ const Detail = () => {
         contribution_id: id,
         title: "",
         content: "",
-        nickname: "",
-        status_id: ""
+        username: ""
       });
     };
 
@@ -193,8 +203,8 @@ const Detail = () => {
                 </IconButton>)
             }
             <Typography sx={{marginLeft:'-0.4rem'}}>{details?.likes}</Typography>
-            <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment">
-                <ChatIcon onClick={()=>setCommentsOpened(!commentsOpened)}/>
+            <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment" onClick={()=>setCommentsOpened(!commentsOpened)}>
+                <ChatIcon />
             </IconButton>
             <Typography sx={{marginLeft:'-0.4rem'}}>{details?.comments?.length}</Typography>
             <IconButton sx={{marginLeft:'.5rem'}} aria-label="visibility">
@@ -221,7 +231,7 @@ const Detail = () => {
         </CardActions>
       </Card>
       {
-        addCommentsOpened && <AddCommentForm commentsInfo={commentsInfo} setCommentsInfo={setCommentsInfo} handleAddCommentClose={handleAddCommentClose}/>
+        addCommentsOpened && <AddCommentForm id={id} commentsInfo={commentsInfo} setCommentsInfo={setCommentsInfo} handleAddCommentClose={handleAddCommentClose}/>
       }
      {
       commentsOpened && (details?.comments?.map((comment) => (

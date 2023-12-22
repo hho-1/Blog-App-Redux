@@ -9,24 +9,36 @@ import Select from "@mui/material/Select"
 import { useSelector } from "react-redux"
 import useBlogCall from "../../hooks/useBlogCall"
 import { Typography } from "@mui/material"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default function UpdateModal({ open, handleClose, info, setInfo }) {
   const { putBlogData } = useBlogCall()
   const { categories } = useSelector((state) => state.blog)
-  const { getCategories } = useBlogCall();
+  const { getCategories, getStatus } = useBlogCall();
+  const { currentUser } = useSelector(state => state.auth);
 
     //let navigate = useNavigate()
 
-    const status = ["d", "p"]
+    const { status, users } = useSelector(state => state.blog)
+    const [userId, setUserId] = useState("")
+
+    //const status = ["d", "p"]
     useEffect(() => {
         getCategories()
+
+        getStatus()
+
+        const userGetData = users.filter((user) => {return user.username === currentUser})
+  
+        setUserId(userGetData[0]?.id);
+        //console.log(userGetData[0]);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setInfo({ ...info, [name]: (value) })
+    setInfo({ ...info, [e.target.name]: (e.target.value), user_id: userId })
+    //console.log(info);
   }
 
   const handleSubmit = (e) => {
@@ -79,8 +91,8 @@ export default function UpdateModal({ open, handleClose, info, setInfo }) {
                         <Select
                           labelId="category"
                           id="category"
-                          name="category"
-                          value={info?.category || ""}
+                          name="category_id"
+                          value={info?.category_id || ""}
                           label="Category"
                           required
                           onChange={handleChange}>
@@ -94,13 +106,13 @@ export default function UpdateModal({ open, handleClose, info, setInfo }) {
                         <Select
                           labelId="status"
                           id="status"
-                          name="status"
-                          value={info?.status || ""}
+                          name="status_id"
+                          value={info?.status_id || ""}
                           required
                           label="Status"
                           onChange={handleChange}>
                             {status.map(item => (
-                              <MenuItem value={item} key={item}>{item}</MenuItem>
+                              <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>

@@ -1,86 +1,61 @@
-import { Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Button, Container, Grid, TextField } from '@mui/material'
+import React from 'react'
 import useBlogCall from '../../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
 
 
-const AddCommentForm = ({commentsInfo, setCommentsInfo, handleAddCommentClose}) => {
 
-    //const status = ["d", "p"]
+const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClose}) => {
 
-    const { status } = useSelector(state => state.blog)
+    const { postCommentData } = useBlogCall();
 
-    const { postBlogData, getStatus } = useBlogCall();
+    const { currentUser } = useSelector(state => state.auth);
 
-    //console.log(status);
-    
-    useEffect(() => {
-      getStatus()
-
-      const statusData = status.map((stat) => {return stat.id})
-      console.log(statusData);
-      
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    console.log(commentsInfo);
     
 
     const handleChange = (e) => {
-        setCommentsInfo({ ...commentsInfo, [e.target.name]: e.target.value })
+        setCommentsInfo({ ...commentsInfo, [e.target.name]: e.target.value, contribution_id: id })
     }
     const handleSubmitComment = (e) => {
-        e.preventdefault()
+        e.preventDefault()
         handleAddCommentClose()
 
         console.log(commentsInfo);
 
-        postBlogData("comments", commentsInfo);
+        postCommentData("comments", commentsInfo);
 
         setCommentsInfo({
-            title: "",
+            contribution_id: id,
             content: "",
-            nickname: "",
-            status_id: ""
-          });
+            title: ""
+        });
     }
 
   return (
     <Container sx={{display:'flex', justifyContent:'center', }}>
         <Grid component="form" sx={{width: 650, backgroundColor:'#f8e8ba', padding:'1rem', margin:'1.5rem 0'}}>
+            
             <TextField
+                
+                fullWidth
+                id="username"
+                name="username"
+                label="Username"
+                value={currentUser}
+                onChange={handleChange}
+                required
+                disabled
+            />
+            <TextField
+                sx={{marginTop:1}}
                 fullWidth
                 id="title"
                 name="title"
                 label="Title"
                 value={commentsInfo?.title || ""}
                 onChange={handleChange}
-                required
             />
-            
-            <TextField
-                sx={{marginTop:1}}
-                fullWidth
-                id="nickname"
-                name="nickname"
-                label="Nickname"
-                value={commentsInfo?.nickname}
-                onChange={handleChange}
-                required
-            /> 
-            <FormControl fullWidth sx={{marginTop:1}}>
-                <InputLabel id="status">Status</InputLabel>
-                <Select
-                  labelId="status"
-                  id="status"
-                  name="status_id"
-                  value={commentsInfo.status_id || ""}
-                  label="Status"
-                  required
-                  onChange={handleChange}>
-                    {status.map(item => (
-                      <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
             <TextField
                 sx={{marginTop:1}}
                 fullWidth
@@ -88,8 +63,8 @@ const AddCommentForm = ({commentsInfo, setCommentsInfo, handleAddCommentClose}) 
                 name="content"
                 label="Content"
                 multiline
-                rows={2}
-                value={commentsInfo?.content}
+                rows={4}
+                value={commentsInfo?.content || ""}
                 onChange={handleChange}
                 required
                 

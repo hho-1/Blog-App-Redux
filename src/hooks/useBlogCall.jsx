@@ -1,10 +1,10 @@
 //import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess, getCommentsSuccess, getUsersSuccess } from "../features/blogSlice";
-//import axios from "axios";
+import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess, getCommentsSuccess, getUsersSuccess, getStatusSuccess, getLikesSuccess, getLikesNumSuccess, getDislikesNumSuccess } from "../features/blogSlice";
 //import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 import useAxios from "./useAxios";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
+
 
 const useBlogCall = () => {
   const dispatch = useDispatch();
@@ -64,7 +64,18 @@ const useBlogCall = () => {
         const url = "status";
         const { data } = await axiosWithPublic.get(`${BASE_URL}/${url}`);
         //console.log(data);
-        dispatch(getUsersSuccess({ data, url })); // {data:data,url:url}
+        dispatch(getStatusSuccess({ data, url })); // {data:data,url:url}
+      } catch (error) {
+        dispatch(fetchFail());
+      }
+    };
+    const getLikes = async () => {
+      dispatch(fetchStart());
+      try {
+        const url = "likes";
+        const { data } = await axiosWithPublic.get(`${BASE_URL}/${url}`);
+        //console.log(data);
+        dispatch(getLikesSuccess({ data, url })); // {data:data,url:url}
       } catch (error) {
         dispatch(fetchFail());
       }
@@ -76,12 +87,12 @@ const useBlogCall = () => {
 
   const postBlogData = async (url ,info) => {
     dispatch(fetchStart());
-    //console.log(url);
+    console.log(info);
     try {                                   
       //const url = "blogs";
       const { data } = await axiosWithToken.post(`/${url}`, info);
 
-      //console.log(info);
+      console.log(info);
       getContributions();
       
       toastSuccessNotify(`${url} successfuly created!`);
@@ -91,6 +102,90 @@ const useBlogCall = () => {
       toastErrorNotify(`${url} not successfuly created!`);
     }
   };
+  const postCommentData = async (url ,info) => {
+    dispatch(fetchStart());
+    console.log(info);
+    try {                                   
+      //const url = "comments";
+      const { data } = await axiosWithToken.post(`/${url}`, info);
+
+      //console.log(url);
+      getComments();
+      
+      toastSuccessNotify(`${url} successfuly created!`);
+      dispatch(getCommentsSuccess({ data, url }));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(`${url} not successfuly created!`);
+    }
+  };
+  const postLikesData = async (url ,info) => {
+    dispatch(fetchStart());
+    //console.log(info);
+    try {                                   
+      //const url = "comments";
+      console.log(info);
+      const { data } = await axiosWithPublic.post(`/${url}`, info);
+
+      
+      getLikes();
+      
+      toastSuccessNotify(`${url} successfuly created!`);
+      dispatch(getLikesSuccess({ data, url }));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(`${url} not successfuly created!`);
+    }
+  };
+  const deleteLikesData = async (url, id) => {
+    dispatch(fetchStart())
+    try {
+      await axiosWithPublic.delete(`/${url}/${id}`)
+      toastSuccessNotify(`${url} succesfuly deleted`)
+      getContributions()
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify(`${url} can not be deleted`)
+      console.log(error)
+    }
+  }
+  const postLikesNumData = async (url ,info) => {
+    dispatch(fetchStart());
+    console.log(info);
+    try {                                   
+      //const url = "comments";
+      const { data } = await axiosWithPublic.post(`/${url}`, info);
+
+      //console.log(url);
+      getComments();
+      
+      toastSuccessNotify(`${url} successfuly created!`);
+      dispatch(getLikesNumSuccess({ data, url }));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(`${url} not successfuly created!`);
+    }
+  };
+  const postDislikesNumData = async (url ,info) => {
+    dispatch(fetchStart());
+    console.log(info);
+    try {                                   
+      //const url = "comments";
+      const { data } = await axiosWithPublic.post(`/${url}`, info);
+
+      //console.log(url);
+      getComments();
+      
+      toastSuccessNotify(`${url} successfuly created!`);
+      dispatch(getDislikesNumSuccess({ data, url }));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(`${url} not successfuly created!`);
+    }
+  };
+
+
+
   const putBlogData = async (url, info) => {
     dispatch(fetchStart())
     try {
@@ -123,8 +218,14 @@ const useBlogCall = () => {
     getContributions,
     getCategories,
     postBlogData,
+    postCommentData,
+    postLikesData,
+    deleteLikesData,
+    postLikesNumData,
+    postDislikesNumData,
     putBlogData,
     getComments,
+    getLikes,
     getStatus,
     getUsers,
     deleteBlogData

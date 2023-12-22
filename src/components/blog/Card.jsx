@@ -13,40 +13,94 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useBlogCall from '../../hooks/useBlogCall';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import useIPAddress from '../../hooks/useIPAddress';
 
 
-export default function ImgMediaCard({id, createdAt, title, image, content, user_id, likes, comments, post_views}) {
+export default function ImgMediaCard({ id, createdAt, comment_count, title, image, content, user_id, likes_count, post_views, likes}) {
 
     const date = createdAt?.slice(0,10)
     //console.log(date);
     const time = createdAt?.slice(11,19)
     //console.log(time);
 
+    useEffect(() => {
+    
+      getContributions();
+      getUsers()
+      getLikes()
+  
+      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     let navigate = useNavigate()
 
-    const [likeClicked, setLikeClicked] = React.useState(false)
+    const { currentUser } = useSelector(state => state.auth);
+
+    const { users } = useSelector(state => state.blog);
+    //const { likes } = useSelector(state => state.blog);
+
+    const { ip } = useIPAddress();
+
+    const username = users.filter((user) => {return user._id === user_id}).map((user) => {return user.username})
+    const userId = users.filter((user) => {return user.username === currentUser})
+
+
+    const [user, setUser] = useState("")
+
+    useEffect(() => {
+      if(currentUser){
+        
+        setUser(user_id)
+        console.log(user);
+      }
+      else{
+        setUser(ip)
+      }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+    
+    const { getContributions, getUsers, getLikes, postLikesData, deleteLikesData } = useBlogCall();
+
+
+    const [likesInfo, setLikesInfo] = useState({
+      contribution_id: id,
+      user_id: userId[0]?.id,
+      differ: ip,
+      quantity: likes_count
+    })
+
+
+    const [likeClicked, setLikeClicked] = useState(false)
 
     const handleLikeClick = () => {
       setLikeClicked(!likeClicked)
-      if(likeClicked) likes = likes + 1 
-      else if(!likeClicked) likes = likes - 1
+      
+      if(!likeClicked) {
+        
+        setLikesInfo({
+          contribution_id: id,
+          user_id: userId[0]?.id,
+          differ: ip,
+          quantity: likes_count
+        })
+        postLikesData("likes", likesInfo)
+      }
+      else{
+        console.log(likesInfo);
+        //deleteLikesData("likes", likeId)
+      }
       
     }
-
-    const { users } = useSelector(state => state.blog);
-
-    const { getContributions, getUsers } = useBlogCall();
-
-
-  React.useEffect(() => {
     
-    getContributions();
-    getUsers()
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  
    
-  const username = users.filter((user) => {return user._id === user_id}).map((user) => {return user.username})
+
+  
     
   return (
     <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between', margin:'1rem' }}>
@@ -92,7 +146,7 @@ export default function ImgMediaCard({id, createdAt, title, image, content, user
       <CardActions>
         <Grid item xs={8} sx={{display:'flex', alignItems:'center', justifyContent:'flex-start', marginInlineStart:'-0.5rem'}}>
             {
-              likeClicked ? (<IconButton aria-label="add to favorites" sx={{color:'red'}} onClick={handleLikeClick}>
+              (likeClicked) ? (<IconButton aria-label="add to favorites" sx={{color:'red'}} onClick={handleLikeClick}>
                 <FavoriteIcon/>
             </IconButton>) : (<IconButton aria-label="add to favorites"  onClick={handleLikeClick}>
                 <FavoriteIcon/>
@@ -100,11 +154,11 @@ export default function ImgMediaCard({id, createdAt, title, image, content, user
             )
             }
             
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{likes}</Typography>
+            <Typography sx={{marginInlineStart:'-0.4rem'}}>{likes_count}</Typography>
             <IconButton aria-label="add to favorites">
                 <ChatIcon />
             </IconButton>
-            <Typography sx={{marginInlineStart:'-0.4rem'}}>{comments?.length}</Typography>
+            <Typography sx={{marginInlineStart:'-0.4rem'}}>{comment_count}</Typography>
             <IconButton aria-label="add to favorites">
                 <VisibilityOutlinedIcon />
             </IconButton>

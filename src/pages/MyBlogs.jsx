@@ -31,7 +31,7 @@ const MyBlogs = () => {
     const blogs = contributions.filter((blog) => {return blog.user_id === data[0]._id})
     //console.log(data);
     setMyBlogs(blogs)
-    console.log(myBlogs);
+    //console.log(myBlogs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     

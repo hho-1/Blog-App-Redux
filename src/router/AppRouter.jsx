@@ -10,19 +10,22 @@ import PrivateRouter from './PrivateRouter'
 import MyBlogs from '../pages/MyBlogs'
 import Profile from '../pages/Profile'
 import Detail from '../pages/Detail'
+//import { useSelector } from 'react-redux'
 const AppRouter = () => {
 
   const [authType, setAuthType] = useState('login')
+
+  
 
   return (
     <BrowserRouter>
         <Navbar authType={authType} setAuthType={setAuthType}/>
         
         <Routes>
-            <Route path='/' element={<DashBoard/>}/>
+            <Route path='/' element={<DashBoard /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} *//>}/>
             <Route path='/auth' element={<Auth authType={authType} setAuthType={setAuthType}/>}/>
             <Route path='/about' element={<About/>}/>
-            <Route path="/blogs/:id" element={<Detail />} />
+            <Route path="/blogs/:id" element={<Detail /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} */ />} />
             <Route path='' element={<PrivateRouter/>}>
               <Route path='/newblog' element={<NewBlog/>}/>
               <Route path='/myblogs' element={<MyBlogs/>}/>
