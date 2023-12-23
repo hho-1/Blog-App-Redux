@@ -55,7 +55,6 @@ export default function ImgMediaCard({ id, createdAt, comment_count, title, imag
       getUsers()
       getLikes()
     
-      
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -91,7 +90,7 @@ export default function ImgMediaCard({ id, createdAt, comment_count, title, imag
           user_id: userId[0]?.id || "",
         } : {
           contribution_id: id,
-          differ: userId[0]?.id ? "" : ip
+          differ: ip
         }
         /* setLikesInfo({
           contribution_id: id,

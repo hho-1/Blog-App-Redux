@@ -10,6 +10,7 @@ import PrivateRouter from './PrivateRouter'
 import MyBlogs from '../pages/MyBlogs'
 import Profile from '../pages/Profile'
 import Detail from '../pages/Detail'
+import FavoriBlogs from '../pages/FavoriBlogs'
 //import { useSelector } from 'react-redux'
 const AppRouter = () => {
 
@@ -29,6 +30,7 @@ const AppRouter = () => {
             <Route path='' element={<PrivateRouter/>}>
               <Route path='/newblog' element={<NewBlog/>}/>
               <Route path='/myblogs' element={<MyBlogs/>}/>
+              <Route path='/favorites' element={<FavoriBlogs/>}/>
               <Route path='/profile' element={<Profile/>}/>
             </Route>
   

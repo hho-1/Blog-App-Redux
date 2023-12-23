@@ -5,13 +5,21 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 //import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import useIPAddress from '../../hooks/useIPAddress';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-const CommentsCard = ({title, content, publish_date, likes_num, dislikes_num, username}) => {
+const CommentsCard = ({title, content, publish_date, likes_num, dislikes_num, username, comment_dislikes, comment_likes}) => {
 
     const date = publish_date?.slice(0,10)
     //console.log(date);
     const time = publish_date?.slice(11,19)
     //console.log(time);
+
+    const { ip } = useIPAddress();
+    const { currentUser } = useSelector(state => state.auth);
+    const { id } = useParams();
+  
 
     const [thumbsUpClicked, setThumbsUpClicked] = useState(false)
     const [thumbsDownClicked, setThumbsDownClicked] = useState(false)

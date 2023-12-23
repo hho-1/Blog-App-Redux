@@ -12,6 +12,7 @@ import UpdateModal from '../components/blog/BlogUpdateModal';
 import useBlogCall from '../hooks/useBlogCall';
 import CommentsCard from '../components/blog/CommentsCard';
 import AddCommentForm from '../components/blog/AddCommentForm';
+import useIPAddress from '../hooks/useIPAddress';
 
 
 const Detail = () => {
@@ -23,8 +24,6 @@ const Detail = () => {
 
   const { contributions } = useSelector(state => state.blog);
 
-  // const { getContributions } = useBlogCall();
-  // const { getCategories } = useBlogCall();
 
   const [info, setInfo] = useState({
     id: "",
@@ -38,27 +37,19 @@ const Detail = () => {
     likes: [],
     comments: [],
     comment_count: 0,
+    likes_count: 0,
     post_views: 0
   });
   
 
   let navigate = useNavigate()
-
-
-    const [likeClicked, setLikeClicked] = React.useState(false)
-
-    const handleLikeClick = () => {
-      setLikeClicked(!likeClicked)
-      if(likeClicked) info.likes += 1 
-      else if(!likeClicked) info.likes -= 1
-      
-    }
     
     const [details, setDetails] = useState("");
 
     const { users } = useSelector(state => state.blog);
+    const { likes } = useSelector(state => state.blog);
 
-    const { deleteBlogData, getComments, getUsers } = useBlogCall()
+    const { deleteBlogData, getComments, getUsers, getLikes, getContributions, postLikesData, deleteLikesData } = useBlogCall()
     
 
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -100,6 +91,7 @@ const Detail = () => {
           status_id: data[0]?.status_id,
           content: data[0]?.content,
           comments: data[0]?.comments,
+          likes_count: data[0]?.likes_count,
           date: data[0]?.publish_date.slice(0,10),
           time: data[0]?.publish_date.slice(11,19),
         });
@@ -118,7 +110,9 @@ const Detail = () => {
       username: currentUser,
       publish_date: "",
       likes_num: 0,
-      dislikes_num: 0
+      dislikes_num: 0,
+      comment_likes: [],
+      comment_dislikes: []
     })
     const [commentsOpened, setCommentsOpened] = useState(false)
 
@@ -145,6 +139,84 @@ const Detail = () => {
       
     }
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    const { ip } = useIPAddress();
+
+    const userId = users.filter((user) => {return user.username === currentUser})
+
+
+    const [likeClicked, setLikeClicked] = useState(false)
+
+    /* const [likesInfo, setLikesInfo] = useState({
+      contribution_id: id,
+      user_id: "",
+      differ: ""
+    }) */
+
+    useEffect(() => {
+      
+      if(likes?.filter((like) => like.user_id === userId[0]?.id && like.contribution_id === id).length){
+        
+        setLikeClicked(true)
+        
+      }
+      else if(!userId[0]?.id){
+        
+        if(likes?.filter((like) => like.differ === ip && like.contribution_id === id).length) setLikeClicked(true)
+        else setLikeClicked(false)
+      }
+
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [likes])
+
+    useEffect(() => {
+
+      getContributions();
+      getUsers()
+      getLikes()
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const handleLikeClick = () => {
+
+      setLikeClicked(!likeClicked)
+      
+      if(!likeClicked) {
+        
+        const likeObject = userId[0]?.id ? {
+          contribution_id: id,
+          user_id: userId[0]?.id || "",
+        } : {
+          contribution_id: id,
+          differ: ip
+        }
+        /* setLikesInfo({
+          contribution_id: id,
+          user_id: userId[0]?.id || "",
+          differ: userId[0]?.id ? "" : ip
+        }) */
+        postLikesData("likes", likeObject)
+      }
+      else{
+        const likeID = userId[0]?.id ? likes.filter((like) => ((like.user_id === userId[0]?.id)) && like.contribution_id === id) : likes.filter((like) => ((like.differ === ip) && like.contribution_id === id))
+        //console.log(likes)
+        //console.log(likeID)
+        deleteLikesData("likes", likeID[0]?._id)
+      }
+      
+    }
+
+    useEffect(() => {
+
+      getContributions();
+      getUsers()
+      getLikes()
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
   return (
     <Container sx={{minHeight:'80vh'}}>
@@ -202,7 +274,7 @@ const Detail = () => {
                   <FavoriteIcon />
                 </IconButton>)
             }
-            <Typography sx={{marginLeft:'-0.4rem'}}>{details?.likes_count}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{likes?.length}</Typography>
             <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment" onClick={()=>setCommentsOpened(!commentsOpened)}>
                 <ChatIcon />
             </IconButton>

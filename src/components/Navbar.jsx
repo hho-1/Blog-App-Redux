@@ -20,7 +20,7 @@ import useAuthCall from '../hooks/useAuthCall';
 
 const pages = ['Dashboard', 'New Blog', 'About'];
 const settings = ['Login','Register'];
-const logoutSet = ['Profile', 'My Blogs','Logout'];
+const logoutSet = ['Profile', 'My Blogs', 'Favorite Blogs', 'Logout'];
 
 function ResponsiveAppBar({setAuthType}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -77,6 +77,9 @@ function ResponsiveAppBar({setAuthType}) {
     }
     else if(e.target.textContent === 'My Blogs'){
       navigate('/myblogs')
+    }
+    else if(e.target.textContent === 'Favorite Blogs'){
+      navigate('/favorites')
     }
     else if(e.target.textContent === 'Profile'){
       navigate('/profile')
