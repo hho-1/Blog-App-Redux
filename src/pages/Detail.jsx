@@ -117,8 +117,8 @@ const Detail = () => {
       title: "",
       username: currentUser,
       publish_date: "",
-      likes_num: [],
-      dislikes_num: []
+      likes_num: 0,
+      dislikes_num: 0
     })
     const [commentsOpened, setCommentsOpened] = useState(false)
 
@@ -202,7 +202,7 @@ const Detail = () => {
                   <FavoriteIcon />
                 </IconButton>)
             }
-            <Typography sx={{marginLeft:'-0.4rem'}}>{details?.likes}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{details?.likes_count}</Typography>
             <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment" onClick={()=>setCommentsOpened(!commentsOpened)}>
                 <ChatIcon />
             </IconButton>

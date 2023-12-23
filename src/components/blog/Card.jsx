@@ -18,29 +18,22 @@ import { useEffect } from 'react';
 import useIPAddress from '../../hooks/useIPAddress';
 
 
-export default function ImgMediaCard({ id, createdAt, comment_count, title, image, content, user_id, likes_count, post_views, likes}) {
+export default function ImgMediaCard({ id, createdAt, comment_count, title, image, content, user_id, likes_count, post_views}) {
 
     const date = createdAt?.slice(0,10)
     //console.log(date);
     const time = createdAt?.slice(11,19)
     //console.log(time);
 
-    useEffect(() => {
-    
-      getContributions();
-      getUsers()
-      getLikes()
-  
-      
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { getContributions, getUsers, getLikes, postLikesData, deleteLikesData } = useBlogCall();
+
 
     let navigate = useNavigate()
 
     const { currentUser } = useSelector(state => state.auth);
 
     const { users } = useSelector(state => state.blog);
-    //const { likes } = useSelector(state => state.blog);
+    const { likes } = useSelector(state => state.blog);
 
     const { ip } = useIPAddress();
 
@@ -48,60 +41,74 @@ export default function ImgMediaCard({ id, createdAt, comment_count, title, imag
     const userId = users.filter((user) => {return user.username === currentUser})
 
 
-    const [user, setUser] = useState("")
-
-    useEffect(() => {
-      if(currentUser){
-        
-        setUser(user_id)
-        console.log(user);
-      }
-      else{
-        setUser(ip)
-      }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
-    const { getContributions, getUsers, getLikes, postLikesData, deleteLikesData } = useBlogCall();
-
-
-    const [likesInfo, setLikesInfo] = useState({
-      contribution_id: id,
-      user_id: userId[0]?.id,
-      differ: ip,
-      quantity: likes_count
-    })
-
-
     const [likeClicked, setLikeClicked] = useState(false)
 
+    /* const [likesInfo, setLikesInfo] = useState({
+      contribution_id: id,
+      user_id: "",
+      differ: ""
+    }) */
+
+    useEffect(() => {
+
+      getContributions();
+      getUsers()
+      getLikes()
+    
+      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    //console.log(likes)
+    useEffect(() => {
+      
+      if(likes?.filter((like) => like.user_id === userId[0]?.id && like.contribution_id === id).length){
+        
+        setLikeClicked(true)
+        
+      }
+      else if(!userId[0]?.id){
+        
+        if(likes?.filter((like) => like.differ === ip && like.contribution_id === id).length) setLikeClicked(true)
+        else setLikeClicked(false)
+      }
+
+      
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [likes])
+
+    
+
     const handleLikeClick = () => {
+
       setLikeClicked(!likeClicked)
       
       if(!likeClicked) {
         
-        setLikesInfo({
+        const likeObject = userId[0]?.id ? {
           contribution_id: id,
-          user_id: userId[0]?.id,
-          differ: ip,
-          quantity: likes_count
-        })
-        postLikesData("likes", likesInfo)
+          user_id: userId[0]?.id || "",
+        } : {
+          contribution_id: id,
+          differ: userId[0]?.id ? "" : ip
+        }
+        /* setLikesInfo({
+          contribution_id: id,
+          user_id: userId[0]?.id || "",
+          differ: userId[0]?.id ? "" : ip
+        }) */
+        postLikesData("likes", likeObject)
       }
       else{
-        console.log(likesInfo);
-        //deleteLikesData("likes", likeId)
+        const likeID = userId[0]?.id ? likes.filter((like) => ((like.user_id === userId[0]?.id)) && like.contribution_id === id) : likes.filter((like) => ((like.differ === ip) && like.contribution_id === id))
+        //console.log(likes)
+        //console.log(likeID)
+        deleteLikesData("likes", likeID[0]?._id)
       }
       
     }
-    
 
-  
-   
-
-  
-    
   return (
     <Card sx={{ width: 345, height: 430, display:'flex', flexDirection:'column', justifyContent:'space-between', margin:'1rem' }}>
       <CardMedia

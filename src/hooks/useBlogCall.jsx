@@ -125,27 +125,27 @@ const useBlogCall = () => {
     try {                                   
       //const url = "comments";
       console.log(info);
-      const { data } = await axiosWithPublic.post(`/${url}`, info);
+      await axiosWithPublic.post(`/${url}`, info);
 
-      
-      getLikes();
-      
-      toastSuccessNotify(`${url} successfuly created!`);
-      dispatch(getLikesSuccess({ data, url }));
+      getContributions();
+      getLikes()
+    
+      //dispatch(getLikesSuccess({ data, url })); Bunu sildik cünkü likes sayisi teke düstügünde data'yi objeye ceviriyordu. Öyle olunca da likes'a filter yapamiyoruz
     } catch (error) {
       dispatch(fetchFail());
-      toastErrorNotify(`${url} not successfuly created!`);
+      
     }
   };
   const deleteLikesData = async (url, id) => {
     dispatch(fetchStart())
     try {
       await axiosWithPublic.delete(`/${url}/${id}`)
-      toastSuccessNotify(`${url} succesfuly deleted`)
+      
       getContributions()
+      getLikes()
     } catch (error) {
       dispatch(fetchFail())
-      toastErrorNotify(`${url} can not be deleted`)
+      
       console.log(error)
     }
   }

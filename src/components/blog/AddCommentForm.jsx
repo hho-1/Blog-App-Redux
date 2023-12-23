@@ -11,7 +11,7 @@ const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClos
 
     const { currentUser } = useSelector(state => state.auth);
 
-    console.log(commentsInfo);
+    //console.log(commentsInfo);
     
 
     const handleChange = (e) => {

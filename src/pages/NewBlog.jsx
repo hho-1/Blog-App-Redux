@@ -8,7 +8,7 @@ import useBlogCall from '../hooks/useBlogCall';
 const NewBlog = () => {
 
   const { categories } = useSelector(state => state.blog);
-  const { getCategories } = useBlogCall();
+  const { getCategories, getUsers, getStatus, postBlogData } = useBlogCall();
 
   const { currentUser } = useSelector(state => state.auth);
 
@@ -21,10 +21,11 @@ useEffect(() => {
   getCategories()
 
   getStatus()
+  getUsers()
 
   const userGetData = users.filter((user) => {return user.username === currentUser})
   
-  setUserId(userGetData[0].id);
+  setUserId(userGetData[0]?.id);
   //console.log(userId);
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
@@ -38,7 +39,6 @@ useEffect(() => {
     content: "",
   });
 
-  const { postBlogData, getStatus } = useBlogCall();
 
   const { status, users } = useSelector(state => state.blog)
 

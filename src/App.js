@@ -4,6 +4,7 @@ import './App.css';
 import store from "./store/Store"
 import {Provider} from "react-redux"
 import AppRouter from './router/AppRouter';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const theme = createTheme({
@@ -27,6 +28,7 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
+      <ToastContainer/>
       <Provider store={store}>
         <AppRouter/>
       </Provider>
