@@ -1,46 +1,138 @@
 import { Box, Card, CardActions, CardContent, Grid, IconButton, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-//import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-//import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import useIPAddress from '../../hooks/useIPAddress';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import useBlogCall from '../../hooks/useBlogCall';
 
-const CommentsCard = ({title, content, publish_date, likes_num, dislikes_num, username, comment_dislikes, comment_likes}) => {
+const CommentsCard = ({ip, id, title, content, publish_date, likes_num, dislikes_num, username, comment_dislikes, comment_likes}) => {
 
     const date = publish_date?.slice(0,10)
     //console.log(date);
     const time = publish_date?.slice(11,19)
     //console.log(time);
 
-    const { ip } = useIPAddress();
+    
     const { currentUser } = useSelector(state => state.auth);
-    const { id } = useParams();
-  
 
+    const { getComments, getCommentLikes, getCommentDislikes, postCommentLikesData, postCommentDislikesData, deleteCommentDislikesData, deleteCommentLikesData } = useBlogCall();
+    const { commentLikes, commentDislikes, users } = useSelector(state => state.blog);
+
+
+    const userId = users.filter((user) => {return user.username === currentUser})
+    //console.log(userId[0]?._id)
+
+  
     const [thumbsUpClicked, setThumbsUpClicked] = useState(false)
     const [thumbsDownClicked, setThumbsDownClicked] = useState(false)
 
-    const handleThumbsUpButtonClick = () => {
-      setThumbsUpClicked(!thumbsUpClicked)
-      if(thumbsDownClicked){
-        setThumbsDownClicked(false) 
-        dislikes_num -= 1}  
+    useEffect(() => {
 
-      thumbsUpClicked ? (likes_num += 1) : (likes_num -= 1)
+      getComments()
+      getCommentLikes()
+      getCommentDislikes()
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    //const { ip } = useIPAddress();
+
+    useEffect(() => {
+      
+      if(commentLikes?.filter((like) => like.user_id === userId[0]?._id && like.comment_id === id).length){
+        
+        setThumbsUpClicked(true)
+        
+      }
+      else if(commentDislikes?.filter((dislike) => dislike.user_id === userId[0]?._id && dislike.comment_id === id).length){
+        setThumbsDownClicked(true)
+      }
+      else if(!userId[0]?._id){
+        
+        console.log(commentLikes)
+        console.log(ip)
+          if(commentLikes.filter((like) => like.differ === ip && like.comment_id === id).length) {
+            setThumbsUpClicked(true)
+          }
+          else if(commentDislikes.filter((dislike) => dislike.differ === ip && dislike.comment_id === id).length){
+            setThumbsDownClicked(true) 
+          } 
+          else{
+            setThumbsUpClicked(false)
+            setThumbsDownClicked(false)
+            }
+      }
+      else{
+        setThumbsUpClicked(false)
+        setThumbsDownClicked(false)
+      }
+      
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  
+
+    const handleThumbsUpButtonClick = () => {
+      
+      setThumbsUpClicked(!thumbsUpClicked)
+
+      if(!thumbsUpClicked){
+        if(thumbsDownClicked){
+
+          setThumbsDownClicked(false) 
+
+          const commentDislikeID = userId[0]?._id ? commentDislikes.filter((dislike) => ((dislike.user_id === userId[0]?._id) && dislike.comment_id === id)) : commentDislikes.filter((dislike) => ((dislike.differ === ip) && dislike.comment_id === id))
+
+          deleteCommentDislikesData("commentdislikes", commentDislikeID[0]?._id)
+          
+        } 
+        const likeObject = userId[0]?._id ? {
+          comment_id: id,
+          user_id: userId[0]?._id,
+        } : {
+          comment_id: id,
+          differ: ip
+        }
+        postCommentLikesData("commentlikes", likeObject)
+        
+      }  
+      else{
+        const commentLikeID = userId[0]?._id ? commentLikes.filter((like) => ((like.user_id === userId[0]?._id) && like.comment_id === id)) : commentLikes.filter((like) => ((like.differ === ip) && like.comment_id === id))
+
+        deleteCommentLikesData("commentlikes", commentLikeID[0]?._id)
+      }
+
     }
 
     const handleThumbsDownButtonClick = () => {
       setThumbsDownClicked(!thumbsDownClicked)
 
-      if(thumbsUpClicked){
-        setThumbsUpClicked(false) 
-        likes_num -= 1}
+      if(!thumbsDownClicked){
+        if(thumbsUpClicked){
 
-      thumbsDownClicked ? (dislikes_num += 1) : (dislikes_num -= 1)
+          setThumbsUpClicked(false) 
+
+          const commentLikeID = userId[0]?._id ? commentLikes.filter((like) => ((like.user_id === userId[0]?._id) && like.comment_id === id)) : commentLikes.filter((like) => ((like.differ === ip) && like.comment_id === id))
+
+          deleteCommentLikesData("commentlikes", commentLikeID[0]?._id)
+          
+        } 
+        const dislikeObject = userId[0]?._id ? {
+          comment_id: id,
+          user_id: userId[0]?._id,
+        } : {
+          comment_id: id,
+          differ: ip
+        }
+        postCommentDislikesData("commentdislikes", dislikeObject)
+        
+      }  
+      else{
+        const commentDislikeID = userId[0]?._id ? commentDislikes.filter((dislike) => ((dislike.user_id === userId[0]?._id) && dislike.comment_id === id)) : commentDislikes.filter((dislike) => ((dislike.differ === ip) && dislike.comment_id === id))
+
+        deleteCommentDislikesData("commentdislikes", commentDislikeID[0]?._id)
+      }
     }
 
     
@@ -81,12 +173,12 @@ const CommentsCard = ({title, content, publish_date, likes_num, dislikes_num, us
                 <CardActions>
                   {
                     thumbsUpClicked ? (
-                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.3rem', color:'green'}}>
+                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.8rem', color:'green'}}>
                         <ThumbUpAltIcon/>
                       </IconButton>
                     ):
                     (
-                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.3rem'}}>
+                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.8rem'}}>
                         <ThumbUpAltIcon/>
                       </IconButton>
                     )

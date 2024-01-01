@@ -48,6 +48,7 @@ const Detail = () => {
 
     const { users } = useSelector(state => state.blog);
     const { likes } = useSelector(state => state.blog);
+    const { comments } = useSelector(state => state.blog);
 
     const { deleteBlogData, getComments, getUsers, getLikes, getContributions, postLikesData, deleteLikesData } = useBlogCall()
     
@@ -306,9 +307,9 @@ const Detail = () => {
         addCommentsOpened && <AddCommentForm id={id} commentsInfo={commentsInfo} setCommentsInfo={setCommentsInfo} handleAddCommentClose={handleAddCommentClose}/>
       }
      {
-      commentsOpened && (details?.comments?.map((comment) => (
+      commentsOpened && (comments?.map((comment) => (
         <Grid  item key={comment.id} sx={{marginTop: '1rem'}}>
-          <CommentsCard entry={comment} {...comment}/>
+          <CommentsCard entry={comment} {...comment} ip={ip}/>
         </Grid>
       ))
         

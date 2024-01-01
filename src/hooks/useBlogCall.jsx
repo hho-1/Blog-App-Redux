@@ -1,6 +1,6 @@
 //import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess, getCommentsSuccess, getUsersSuccess, getStatusSuccess, getLikesSuccess, getLikesNumSuccess, getDislikesNumSuccess } from "../features/blogSlice";
+import { fetchFail, fetchStart, contributionsSuccess, getCategoriesSuccess, getCommentLikesSuccess, getCommentDislikesSuccess, getCommentsSuccess, getUsersSuccess, getStatusSuccess, getLikesSuccess } from "../features/blogSlice";
 //import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 import useAxios from "./useAxios";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
@@ -80,6 +80,28 @@ const useBlogCall = () => {
         dispatch(fetchFail());
       }
     };
+    const getCommentLikes = async () => {
+      dispatch(fetchStart());
+      try {
+        const url = "commentlikes";
+        const { data } = await axiosWithPublic.get(`${BASE_URL}/${url}`);
+        //console.log(data);
+        dispatch(getCommentLikesSuccess({ data, url })); // {data:data,url:url}
+      } catch (error) {
+        dispatch(fetchFail());
+      }
+    };
+    const getCommentDislikes = async () => {
+      dispatch(fetchStart());
+      try {
+        const url = "commentdislikes";
+        const { data } = await axiosWithPublic.get(`${BASE_URL}/${url}`);
+        //console.log(data);
+        dispatch(getCommentDislikesSuccess({ data, url })); // {data:data,url:url}
+      } catch (error) {
+        dispatch(fetchFail());
+      }
+    };
   
   
   //! istek atarken ortak olan base_url  ve token gibi değerleri her seferinde yazmak yerine axios instance kullanarak bunları orada tanımlıyoruz. Ve sonrasında sadece istek atmak istediğimiz end pointi yazmamız yeterli oluyor.
@@ -149,41 +171,70 @@ const useBlogCall = () => {
       console.log(error)
     }
   }
-  const postLikesNumData = async (url ,info) => {
+  const postCommentLikesData = async (url ,info) => {
     dispatch(fetchStart());
     console.log(info);
+    //console.log(url);
     try {                                   
-      //const url = "comments";
-      const { data } = await axiosWithPublic.post(`/${url}`, info);
+      
+      await axiosWithPublic.post(`/${url}`, info);
 
-      //console.log(url);
+      getContributions();
       getComments();
+      getCommentLikes()
       
       toastSuccessNotify(`${url} successfuly created!`);
-      dispatch(getLikesNumSuccess({ data, url }));
+      //dispatch(getCommentLikesSuccess({ data, url }));
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`${url} not successfuly created!`);
     }
   };
-  const postDislikesNumData = async (url ,info) => {
+  const deleteCommentLikesData = async (url, id) => {
+    dispatch(fetchStart())
+    console.log(id)
+    try {
+      await axiosWithPublic.delete(`/${url}/${id}`)
+      
+      getComments()
+      getCommentLikes()
+    } catch (error) {
+      dispatch(fetchFail())
+      
+      console.log(error)
+    }
+  }
+  const postCommentDislikesData = async (url ,info) => {
     dispatch(fetchStart());
     console.log(info);
     try {                                   
-      //const url = "comments";
-      const { data } = await axiosWithPublic.post(`/${url}`, info);
+      
+      await axiosWithPublic.post(`/${url}`, info);
 
-      //console.log(url);
+      getContributions();
       getComments();
+      getCommentDislikes();
       
       toastSuccessNotify(`${url} successfuly created!`);
-      dispatch(getDislikesNumSuccess({ data, url }));
+      //dispatch(getCommentDislikesSuccess({ data, url }));
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`${url} not successfuly created!`);
     }
   };
-
+  const deleteCommentDislikesData = async (url, id) => {
+    dispatch(fetchStart())
+    try {
+      await axiosWithPublic.delete(`/${url}/${id}`)
+      
+      getComments()
+      getCommentDislikes()
+    } catch (error) {
+      dispatch(fetchFail())
+      
+      console.log(error)
+    }
+  }
 
 
   const putBlogData = async (url, info) => {
@@ -221,13 +272,17 @@ const useBlogCall = () => {
     postCommentData,
     postLikesData,
     deleteLikesData,
-    postLikesNumData,
-    postDislikesNumData,
+    postCommentDislikesData,
+    postCommentLikesData,
+    deleteCommentLikesData,
+    deleteCommentDislikesData,
     putBlogData,
     getComments,
     getLikes,
     getStatus,
     getUsers,
+    getCommentLikes,
+    getCommentDislikes,
     deleteBlogData
     
   };
