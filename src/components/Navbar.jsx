@@ -29,7 +29,11 @@ function ResponsiveAppBar({setAuthType}) {
   let navigate = useNavigate()
   const { logout } = useAuthCall();
   const { currentUser } = useSelector(state => state.auth);
-  const { user } = useSelector(state => state.auth);
+  //const { user } = useSelector(state => state.auth);
+  const { users } = useSelector(state => state.blog);
+
+  const userrr = users.filter((userr) => userr.username === currentUser)
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -82,7 +86,7 @@ function ResponsiveAppBar({setAuthType}) {
       navigate('/favorites')
     }
     else if(e.target.textContent === 'Profile'){
-      navigate('/profile')
+      navigate(`/users/${userrr[0]?._id}`)
     }
 
 
@@ -181,7 +185,7 @@ function ResponsiveAppBar({setAuthType}) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={user?.image} />
+                <Avatar alt="Remy Sharp" src={userrr[0]?.image} />
               </IconButton>
             </Tooltip>
             <Menu

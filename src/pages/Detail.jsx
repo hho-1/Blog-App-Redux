@@ -79,7 +79,9 @@ const Detail = () => {
         //console.log(data);
 
         const username = users.filter((user) => {return user._id === data[0].user_id})
-        setUsername(username[0]?.username);
+        setUsername(username[0]?.username || "Deleted User");
+
+        
 
         getComments()
         getUsers()
@@ -101,15 +103,17 @@ const Detail = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 //-------------------------------------------------------------------------------
+const userId = users.filter((user) => {return user.username === currentUser})
 
+const relatedComments = comments?.filter((comm) => comm.contribution_id === id)
     
 
     const [commentsInfo, setCommentsInfo] = useState({
       contribution_id: id,
       content: "",
       title: "",
-      username: currentUser,
-      publish_date: "",
+      user_id: "",
+      username: "",
       likes_num: 0,
       dislikes_num: 0,
       comment_likes: [],
@@ -119,6 +123,7 @@ const Detail = () => {
 
     const [addCommentsOpened, setAddCommentsOpened] = useState(false)
 
+
     const handleAddCommentClose = () => {
       
       setAddCommentsOpened(false);
@@ -126,7 +131,12 @@ const Detail = () => {
         contribution_id: id,
         title: "",
         content: "",
-        username: ""
+        user_id: "",
+        username: "",
+        likes_num: 0,
+        dislikes_num: 0,
+        comment_likes: [],
+        comment_dislikes: []
       });
     };
 
@@ -144,7 +154,8 @@ const Detail = () => {
 
     const { ip } = useIPAddress();
 
-    const userId = users.filter((user) => {return user.username === currentUser})
+    const likesOfThisBlog = likes?.filter((like) => like.contribution_id === id)
+    //console.log(likesOfThisBlog.length)
 
 
     const [likeClicked, setLikeClicked] = useState(false)
@@ -275,7 +286,7 @@ const Detail = () => {
                   <FavoriteIcon />
                 </IconButton>)
             }
-            <Typography sx={{marginLeft:'-0.4rem'}}>{likes?.length}</Typography>
+            <Typography sx={{marginLeft:'-0.4rem'}}>{likesOfThisBlog?.length}</Typography>
             <IconButton sx={{marginLeft:'0.5rem'}} aria-label="comment" onClick={()=>setCommentsOpened(!commentsOpened)}>
                 <ChatIcon />
             </IconButton>
@@ -307,7 +318,7 @@ const Detail = () => {
         addCommentsOpened && <AddCommentForm id={id} commentsInfo={commentsInfo} setCommentsInfo={setCommentsInfo} handleAddCommentClose={handleAddCommentClose}/>
       }
      {
-      commentsOpened && (comments?.map((comment) => (
+      commentsOpened && (relatedComments?.map((comment) => (
         <Grid  item key={comment.id} sx={{marginTop: '1rem'}}>
           <CommentsCard entry={comment} {...comment} ip={ip}/>
         </Grid>

@@ -10,12 +10,15 @@ const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClos
     const { postCommentData } = useBlogCall();
 
     const { currentUser } = useSelector(state => state.auth);
+    const { users } = useSelector(state => state.blog);
+
+    const userId = users.filter((user) => {return user.username === currentUser})
 
     //console.log(commentsInfo);
     
 
     const handleChange = (e) => {
-        setCommentsInfo({ ...commentsInfo, [e.target.name]: e.target.value, contribution_id: id })
+        setCommentsInfo({...commentsInfo, [e.target.name]: e.target.value, user_id: userId[0]?._id, username: userId[0]?.username})
     }
     const handleSubmitComment = (e) => {
         e.preventDefault()
@@ -28,7 +31,13 @@ const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClos
         setCommentsInfo({
             contribution_id: id,
             content: "",
-            title: ""
+            title: "",
+            user_id: "",
+            username: "",
+            likes_num: 0,
+            dislikes_num: 0,
+            comment_likes: [],
+            comment_dislikes: []
         });
     }
 
@@ -36,17 +45,6 @@ const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClos
     <Container sx={{display:'flex', justifyContent:'center', }}>
         <Grid component="form" sx={{width: 650, backgroundColor:'#f8e8ba', padding:'1rem', margin:'1.5rem 0'}}>
             
-            <TextField
-                
-                fullWidth
-                id="username"
-                name="username"
-                label="Username"
-                value={currentUser}
-                onChange={handleChange}
-                required
-                disabled
-            />
             <TextField
                 sx={{marginTop:1}}
                 fullWidth

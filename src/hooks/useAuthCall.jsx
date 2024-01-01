@@ -83,21 +83,21 @@ const useAuthCall = () => {
       }
     }
   };
-  const getUser = async () => {
+  const getUsers = async () => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosWithToken(`${BASE_URL}/auth/user/`);
+      const { data } = await axiosWithToken(`${BASE_URL}/users`);
       //console.log(data);
       dispatch(userUpdateSuccess({ data })); // {data:data,url:url}
     } catch (error) {
       dispatch(fetchFail());
     }
   };
-  const putUserData = async (info) => {
+  const putUserData = async (url, info) => {
     dispatch(fetchStart())
     try {
-      const data = await axiosWithToken.put('/auth/user/', info)
-      getUser()
+      const data = await axiosWithToken.put(`/${url}/${info.id}`, info)
+      getUsers()
       toastSuccessNotify(`User successfully updated`)
       dispatch(userUpdateSuccess({ data }));
     } catch (error) {
@@ -107,7 +107,7 @@ const useAuthCall = () => {
     }
   }
 
-  return { login, register, logout, putUserData, getUser };
+  return { login, register, logout, putUserData, getUsers };
 };
 
 export default useAuthCall;

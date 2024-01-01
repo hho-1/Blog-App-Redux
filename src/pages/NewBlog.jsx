@@ -26,7 +26,7 @@ useEffect(() => {
   const userGetData = users.filter((user) => {return user.username === currentUser})
   
   setUserId(userGetData[0]?.id);
-  //console.log(userId);
+  
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 

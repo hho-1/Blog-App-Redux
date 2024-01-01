@@ -3,10 +3,17 @@ import { Button, Card, CardContent, CardMedia, Container, Grid, Typography } fro
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import UpdateModal from '../components/auth/UserUpdateModal';
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
 
+  const {id} = useParams()
+
+  const { users } = useSelector(state => state.blog);
   const { user } = useSelector(state => state.auth);
+
+  const relatedUser = users.filter((userr) => userr._id === id)
+  
 
   const [info, setInfo] = useState({
     username: "",
@@ -39,12 +46,12 @@ const Profile = () => {
       //console.log(data);
 
       setInfo({
-        username: user?.username,
-        first_name: user?.first_name,
-        last_name: user?.last_name,
-        email: user?.email,
-        bio: user?.bio,
-        image: user?.image
+        username: relatedUser[0]?.username,
+        first_name: relatedUser[0]?.first_name,
+        last_name: relatedUser[0]?.last_name,
+        email: relatedUser[0]?.email,
+        bio: relatedUser[0]?.bio,
+        image: relatedUser[0]?.image
       });
       
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,24 +62,24 @@ const Profile = () => {
       <Card sx={{height:'50vh', width: '20vw', marginTop: '10rem', mx:'auto'}}>
         <CardMedia
           component="img"
-          alt={user?.username}
+          alt={relatedUser[0]?.username}
           height="130em"
           sx={{width:'fit-content', margin:'auto', marginTop:'0.5rem'}}
-          image={user?.image}
+          image={relatedUser[0]?.image}
         />
         <CardContent>
-          <Typography variant='h5'><span style={{color:'red'}}>User ID:</span> {user?.id}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Username:</span> {user?.username}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>First Name:</span> {user?.first_name || ""}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Last Name:</span> {user?.last_name || ""}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Email:</span> {user?.email || ""}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Bio:</span> {user?.bio || ""}</Typography>
+          <Typography variant='h5'><span style={{color:'red'}}>User ID:</span> {relatedUser[0]?.id}</Typography>
+          <Typography variant='h5'><span style={{color:'red'}}>Username:</span> {relatedUser[0]?.username}</Typography>
+          <Typography variant='h5'><span style={{color:'red'}}>First Name:</span> {relatedUser[0]?.first_name || ""}</Typography>
+          <Typography variant='h5'><span style={{color:'red'}}>Last Name:</span> {relatedUser[0]?.last_name || ""}</Typography>
+          <Typography variant='h5'><span style={{color:'red'}}>Email:</span> {relatedUser[0]?.email || ""}</Typography>
+          <Typography variant='h5'><span style={{color:'red'}}>Bio:</span> {relatedUser[0]?.bio || ""}</Typography>
         </CardContent>
         <Grid item xs={4} sx={{marginInline: '8vw', marginTop:'4rem'}}>
           <Button size="medium"  variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}  onClick={handleOpenUpdateModal}>Edit</Button>
         </Grid>
       </Card>
-      <UpdateModal open={openUpdateModal} handleClose={handleModalClose} info={info} setInfo={setInfo} />
+      <UpdateModal open={openUpdateModal} handleClose={handleModalClose} info={info} setInfo={setInfo} user={user}/>
     </Container>
     
   )

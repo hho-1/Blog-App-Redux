@@ -6,14 +6,14 @@ import { Typography } from "@mui/material"
 import { useEffect } from "react"
 import useAuthCall from "../../hooks/useAuthCall"
 
-export default function UpdateModal({ open, handleClose, info, setInfo }) {
+export default function UpdateModal({ open, handleClose, info, setInfo, user }) {
   const { putUserData } = useAuthCall()
-  const { getUser } = useAuthCall();
+  const { getUsers } = useAuthCall();
 
     //let navigate = useNavigate()
 
     useEffect(() => {
-      getUser()
+      getUsers()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -24,7 +24,7 @@ export default function UpdateModal({ open, handleClose, info, setInfo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    putUserData(info)
+    putUserData("users", info)
     //navigate("/blogs/" + info.id)
     handleClose()
     setInfo({})

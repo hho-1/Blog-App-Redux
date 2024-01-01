@@ -6,11 +6,11 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import { useSelector } from 'react-redux';
 import useBlogCall from '../../hooks/useBlogCall';
 
-const CommentsCard = ({ip, id, title, content, publish_date, likes_num, dislikes_num, username, comment_dislikes, comment_likes}) => {
+const CommentsCard = ({ip, id, title, content, likes_num, dislikes_num, username, user_id, comment_dislikes, comment_likes, createdAt}) => {
 
-    const date = publish_date?.slice(0,10)
+    const date = createdAt?.slice(0,10)
     //console.log(date);
-    const time = publish_date?.slice(11,19)
+    const time = createdAt?.slice(11,19)
     //console.log(time);
 
     
@@ -22,6 +22,7 @@ const CommentsCard = ({ip, id, title, content, publish_date, likes_num, dislikes
 
     const userId = users.filter((user) => {return user.username === currentUser})
     //console.log(userId[0]?._id)
+    
 
   
     const [thumbsUpClicked, setThumbsUpClicked] = useState(false)

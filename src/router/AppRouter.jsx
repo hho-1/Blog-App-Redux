@@ -31,7 +31,7 @@ const AppRouter = () => {
               <Route path='/newblog' element={<NewBlog/>}/>
               <Route path='/myblogs' element={<MyBlogs/>}/>
               <Route path='/favorites' element={<FavoriBlogs/>}/>
-              <Route path='/profile' element={<Profile/>}/>
+              <Route path="/users/:id" element={<Profile />} />
             </Route>
   
         </Routes>
