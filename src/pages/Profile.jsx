@@ -16,6 +16,7 @@ const Profile = () => {
   
 
   const [info, setInfo] = useState({
+    id: id,
     username: "",
     first_name: "",
     last_name: "",
@@ -46,6 +47,7 @@ const Profile = () => {
       //console.log(data);
 
       setInfo({
+        id: id,
         username: relatedUser[0]?.username,
         first_name: relatedUser[0]?.first_name,
         last_name: relatedUser[0]?.last_name,
