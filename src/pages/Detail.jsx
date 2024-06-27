@@ -105,7 +105,7 @@ const Detail = () => {
 //-------------------------------------------------------------------------------
 const userId = users.filter((user) => {return user.username === currentUser})
 
-const relatedComments = comments?.filter((comm) => comm.contribution_id === id)
+const relatedComments = comments.length && comments.filter((comm) => comm.contribution_id === id)
     
 
     const [commentsInfo, setCommentsInfo] = useState({
