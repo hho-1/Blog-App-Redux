@@ -7,7 +7,7 @@
 ## Project Skeleton
 
 Blog App
-
+```
 |----readme.md        
 
 ├── src
