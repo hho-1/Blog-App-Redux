@@ -6,7 +6,7 @@ const About = () => {
     <Container sx={{height:'51vh'}}>
       <Box>
         <Typography sx={{textAlign:'center', marginTop:'20rem'}} variant='h5' >
-            This Blog App has been designed by <a href='https://github.com/hho-1'>hho-1</a> in 2023. 
+            This Blog App has been designed by <a href='https://github.com/hho-1'>hho-1</a> in 2024. 
           </Typography>
       </Box>
     </Container>

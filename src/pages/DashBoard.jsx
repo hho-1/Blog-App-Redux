@@ -24,39 +24,59 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
     
   }, []);
 
-  const [buttonName, setButtonName] = useState('all')
+  
   const [isFiltered, setIsFiltered] = useState(false)
+  const [categoryId, setCategoryId] = useState("")
 
   //console.log(contributions);
   return (
     <>
-    <CategoryBar setButtonName={setButtonName } setIsFiltered={setIsFiltered}/>
-    <Container sx={{height:'fit-content', minHeight:'82vh', marginBottom:'2rem'}}>
-      
-      <Grid
-        container
-        alignItems="center"
-        display={"flex"}
-        justifyContent="center"
-        spacing={3}
-        mt={3}>
-        {isFiltered ? (contributions.filter((blog) => {
-                return blog.category_name === buttonName;
-              }).map((filteredEntry, index) => {return <ImgMediaCard key={index} {...filteredEntry} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} *//>})
-            ) 
-            : 
-            (
-              contributions.map((blog, index) => {
-                
-                return <ImgMediaCard key={index} {...blog} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} *//>
-              })
-            )
-        }
-      </Grid>
-
-    </Container>
+      <CategoryBar
+        setIsFiltered={setIsFiltered}
+        setCategoryId={setCategoryId}
+      />
+      <Container
+        sx={{ height: "fit-content", minHeight: "82vh", marginBottom: "2rem" }}
+      >
+        <Grid
+          container
+          alignItems="center"
+          display={"flex"}
+          justifyContent="center"
+          spacing={3}
+          mt={3}
+        >
+          {isFiltered
+            ? contributions
+                .filter((blog) => {
+                  return (
+                    blog.category_id === categoryId &&
+                    blog.status_id === "658451adb081ace3b52f149b"
+                  );
+                })
+                .map((filteredEntry, index) => {
+                  return (
+                    <ImgMediaCard
+                      key={index}
+                      {...filteredEntry} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} */
+                    />
+                  );
+                })
+            : contributions.filter((blog) => {
+              return blog.status_id === "658451adb081ace3b52f149b";
+            })
+              .map((blog, index) => {
+                return (
+                  <ImgMediaCard
+                    key={index}
+                    {...blog} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} */
+                  />
+                );
+              })}
+        </Grid>
+      </Container>
     </>
-  )
+  );
 }
 
 export default DashBoard

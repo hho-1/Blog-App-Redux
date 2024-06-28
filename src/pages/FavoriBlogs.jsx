@@ -26,20 +26,34 @@ const FavoriBlogs = () => {
     getUsers()
     getLikes()
 
-    const data = users.filter(function(user){
-      return user.username === currentUser              //"testUser1"
-    })
-    //console.log(users);
-    const userLikes = likes.filter((like) => {return like.user_id === data[0]._id})
-    //console.log(data);
-    const blogs = contributions.filter((blog) => {return blog._id === userLikes[0].contribution_id})
-    //console.log(data);
-    setFavoriBlogs(blogs)
-    //console.log(favoriBlogs);
+    bringFavorites()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     
   }, []);
+
+  async function bringFavorites() {
+    let blogs = []
+    const data = await users.filter(function (user) {
+      return user.username === currentUser; //"testUser1"
+    });
+    //console.log(users);
+
+    const userLikes = await likes.filter((like) => {
+      return like.user_id === data[0]._id;
+    });
+    //console.log(userLikes);
+
+    for (let i = 0; i < userLikes.length; i++) {
+      blogs.push(...contributions.filter((blog) => {
+      return blog._id === userLikes[i].contribution_id;
+    }))
+    }
+ 
+    //console.log(blogs);
+    setFavoriBlogs(blogs);
+    //console.log(favoriBlogs);
+  }
 
   return (
     <Container sx={{height:'fit-content', minHeight:'82vh', marginBottom:'2rem'}}>
@@ -50,8 +64,8 @@ const FavoriBlogs = () => {
         justifyContent="center"
         spacing={3}
         mt={3}>
-        {favoriBlogs?.map(item => (
-          <Grid item key={item.id}>
+        {favoriBlogs?.map((item,index) => (
+          <Grid item key={index}>
             <ImgMediaCard entry={item} {...item}/>
           </Grid>
         ))}
