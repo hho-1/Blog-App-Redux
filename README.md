@@ -1,5 +1,5 @@
 
-# Milestone Blog App
+# Blog App with Redux Toolkit
 
 ## Description
 
