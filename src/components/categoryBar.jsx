@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@emotion/react';
+import { ListItemButton, Typography } from '@mui/material';
 
 
 const CategoryBar = ({ setIsFiltered, setCategoryId }) => {
@@ -23,23 +25,47 @@ const CategoryBar = ({ setIsFiltered, setCategoryId }) => {
     setCategoryId(cat.id);
   };
 
+  const theme = useTheme();
+
   return (
     <div>
-      <header id="header-3" className="header">
+      <Typography
+        variant="h6"
+        sx={{
+          backgroundColor: "primary.categoryBackground",
+          backgroundRepeat: "repeat",
+          backgroundImage: "none",
+          backgroundAttachment: "scroll",
+        }}
+        id="header-3"
+        className="header"
+      >
         <nav className="header-nav">
           <ul className="menu">
             <li onClick={() => setIsFiltered(false)}>
-              <a href="#">All Categories</a>
+              <ListItemButton
+                sx={{ color: "primary.textSecondary" }}
+                component="a"
+                href="#"
+              >
+                All Categories
+              </ListItemButton>
             </li>
 
             {categories?.map((item) => (
               <li onClick={handleButtonName} value={item.name} key={item.id}>
-                <a href="#">{item.name}</a>
+                <ListItemButton
+                  sx={{ color: "primary.textSecondary" }}
+                  component="a"
+                  href="#"
+                >
+                  {item.name}
+                </ListItemButton>
               </li>
             ))}
           </ul>
         </nav>
-      </header>
+      </Typography>
     </div>
   );
 };

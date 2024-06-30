@@ -43,7 +43,6 @@ body {
   }
   .menu li a {
     font-size:16px;
-    color: #002499;
     display: block;
     padding: 5px 20px;
     position: relative;
@@ -65,9 +64,7 @@ body {
     border-right: 2px solid #0068e3;
   }
   .menu li a:hover,
-  .menu li .current a {
-    color: #0068e3;
-  }
+  
   .menu li a:hover:before,
   .menu li .current a:before {
     opacity: 1;
@@ -107,7 +104,7 @@ body {
   .search-toggle::after {
     height: 2px;
     width: 7px;
-    background: #002499;
+    /*  */background: #002499;
     top: 10px;
     left: 8px;
     -webkit-transform: rotate(45deg);
@@ -132,9 +129,7 @@ body {
   }
 
 /* Example #3 */
-#header-3{
-	background: #F2F1EF none repeat scroll 0 0;	
-}
+
 
 #header-3 .menu li {
   opacity: 1;

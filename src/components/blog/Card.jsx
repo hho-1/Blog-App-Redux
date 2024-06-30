@@ -100,6 +100,7 @@ export default function ImgMediaCard({
         flexDirection: "column",
         justifyContent: "space-between",
         margin: "1rem",
+        backgroundColor: "primary.backgroundSecondary"
       }}
     >
       <CardMedia
@@ -131,7 +132,7 @@ export default function ImgMediaCard({
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
-            color: "gray",
+            color: "darkgray",
             fontWeight: "400",
             fontSize: "0.875rem",
             lineHeight: 1.43,

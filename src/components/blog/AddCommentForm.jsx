@@ -43,7 +43,7 @@ const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClos
 
   return (
     <Container sx={{display:'flex', justifyContent:'center', }}>
-        <Grid component="form" sx={{width: 650, backgroundColor:'#f8e8ba', padding:'1rem', margin:'1.5rem 0'}}>
+        <Grid component="form" sx={{width: 650, backgroundColor:'primary.addComment', padding:'1rem', margin:'1.5rem 0'}}>
             
             <TextField
                 sx={{marginTop:1}}

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Grid } from '@mui/material'
+import { Box, Container, Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
@@ -30,7 +30,7 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
 
   //console.log(contributions);
   return (
-    <>
+    <Box sx={{ backgroundColor: "primary.backgroundMain"}}>
       <CategoryBar
         setIsFiltered={setIsFiltered}
         setCategoryId={setCategoryId}
@@ -62,20 +62,21 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
                     />
                   );
                 })
-            : contributions.filter((blog) => {
-              return blog.status_id === "658451adb081ace3b52f149b";
-            })
-              .map((blog, index) => {
-                return (
-                  <ImgMediaCard
-                    key={index}
-                    {...blog} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} */
-                  />
-                );
-              })}
+            : contributions
+                .filter((blog) => {
+                  return blog.status_id === "658451adb081ace3b52f149b";
+                })
+                .map((blog, index) => {
+                  return (
+                    <ImgMediaCard
+                      key={index}
+                      {...blog} /* handleLikeClick={handleLikeClick} likeClicked={likeClicked} setLikeClicked={setLikeClicked} likesNum={likesNum} setLikesNum={setLikesNum} */
+                    />
+                  );
+                })}
         </Grid>
       </Container>
-    </>
+    </Box>
   );
 }
 

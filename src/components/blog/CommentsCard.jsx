@@ -138,7 +138,7 @@ const CommentsCard = ({ip, id, title, content, likes_num, dislikes_num, username
 
     
   return (
-    <Card sx={{ width: 645, height: 'fitContent', mx:'auto', backgroundColor:'beige'}}>
+    <Card sx={{ width: 645, height: 'fitContent', mx:'auto', backgroundColor:'primary.addComment'}}>
           <CardContent>
             <Typography gutterBottom variant="h6" component="div" sx={{}}>
               {title}

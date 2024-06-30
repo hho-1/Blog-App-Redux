@@ -68,82 +68,96 @@ useEffect(() => {
 
 
   return (
-    <Container sx={{height:'80vh'}} >
-      <Box sx={{width: 550, margin: 'auto', marginTop:'5rem'}}>
-          
+    <Box sx={{ backgroundColor: "primary.backgroundMain", p:"5rem" }}>
+      <Container sx={{ height: "68vh" }}>
+        <Box sx={{ width: 550, margin: "auto" }}>
           <Box component="form" onSubmit={handleSubmit}>
-          <Typography sx={{marginBottom: 4, textAlign:'center'}} variant='h4' >
-            New Blog 
-          </Typography>
-          <TextField
-            fullWidth
-            id="title"
-            name="title"
-            label="Title"
-            value={info.title}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            sx={{marginTop:1}}
-            fullWidth
-            id="image"
-            name="image"
-            label="Image URL"
-            value={info?.image}
-            onChange={handleChange}
-            
-          /> 
-          <FormControl fullWidth sx={{marginTop:1}}>
-            <InputLabel id="category">Category</InputLabel>
-            <Select
-              labelId="category"
-              id="category"
-              name="category_id"
-              value={info?.category_id || ""}
-              label="Category"
+            <Typography
+              sx={{ marginBottom: 4, textAlign: "center" }}
+              variant="h4"
+            >
+              New Blog
+            </Typography>
+            <TextField
+              fullWidth
+              id="title"
+              name="title"
+              label="Title"
+              value={info.title}
+              onChange={handleChange}
               required
-              onChange={handleChange}>
-                {categories?.map(item => (
-                  <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
+            />
+            <TextField
+              sx={{ marginTop: 1 }}
+              fullWidth
+              id="image"
+              name="image"
+              label="Image URL"
+              value={info?.image}
+              onChange={handleChange}
+            />
+            <FormControl fullWidth sx={{ marginTop: 1 }}>
+              <InputLabel id="category">Category</InputLabel>
+              <Select
+                labelId="category"
+                id="category"
+                name="category_id"
+                value={info?.category_id || ""}
+                label="Category"
+                required
+                onChange={handleChange}
+              >
+                {categories?.map((item) => (
+                  <MenuItem value={item.id} key={item.id}>
+                    {item.name}
+                  </MenuItem>
                 ))}
-            </Select>
-        </FormControl>
-        <FormControl fullWidth sx={{marginTop:1, marginBottom: '1rem'}}>
-            <InputLabel id="status">Status</InputLabel>
-            <Select
-              labelId="status"
-              id="status"
-              name="status_id"
-              value={info?.status_id || ""}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth sx={{ marginTop: 1, marginBottom: "1rem" }}>
+              <InputLabel id="status">Status</InputLabel>
+              <Select
+                labelId="status"
+                id="status"
+                name="status_id"
+                value={info?.status_id || ""}
+                required
+                label="Status"
+                onChange={handleChange}
+              >
+                {status.map((item) => (
+                  <MenuItem value={item.id} key={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              sx={{ marginTop: 1, width: 550 }}
+              id="content"
+              label="Content"
+              name="content"
+              multiline
+              rows={5}
+              value={info?.content}
+              onChange={handleChange}
               required
-              label="Status"
-              onChange={handleChange}>
-                {status.map(item => (
-                  <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-        <TextField
-            sx={{marginTop:1, width:550}}
-            id="content"
-            label="Content"
-            name="content"
-            multiline
-            rows={5}
-            value={info?.content}
-            onChange={handleChange}
-            required
-        />
-        
-        <Button color="primary" onClick={handleSubmit} variant="contained" fullWidth type="submit" sx={{marginTop: 3, "&:hover": {backgroundColor:'#57c1ff'}}}>
-          Add Blog
-        </Button>
-        
+            />
+
+            <Button
+              color="primary"
+              onClick={handleSubmit}
+              variant="contained"
+              fullWidth
+              type="submit"
+              sx={{ marginTop: 3, "&:hover": { backgroundColor: "#57c1ff" } }}
+            >
+              Add Blog
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

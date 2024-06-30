@@ -187,214 +187,216 @@ const Detail = () => {
   };
 
   return (
-    <Container sx={{ minHeight: "80vh" }}>
-      <Card
-        sx={{
-          width: 745,
-          height: 700,
-          display: "block",
-          mx: "auto",
-          marginTop: "2rem",
-          backgroundColor: "#faf3e5",
-        }}
-      >
-        <CardMedia
-          component="img"
-          alt={details?.title}
-          height="250"
+    <Box sx={{ backgroundColor: "primary.backgroundMain", paddingTop: "2rem" }}>
+      <Container sx={{ minHeight: "80vh" }}>
+        <Card
           sx={{
-            width: "fit-content",
-            margin: "auto",
-            marginTop: "0.5rem",
-            marginBottom: "-2rem",
-          }}
-          image={details?.image}
-        />
-        <CardContent
-          sx={{
-            marginTop: "2rem",
-            height: 390,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
+            width: 745,
+            height: 700,
+            display: "block",
+            mx: "auto",
+            marginTop: "1rem",
+            backgroundColor: "primary.backgroundSecondary",
           }}
         >
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ textAlign: "center" }}
-          >
-            {details?.title}
-          </Typography>
-          <p
-            style={{
-              fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-              overflow: "scroll",
-              display: "-webkit-box",
-              WebkitLineClamp: 12,
-              WebkitBoxOrient: "vertical",
-              color: "gray",
-              fontWeight: "400",
-              fontSize: "0.875rem",
-              lineHeight: 1.43,
-              letterSpacing: "0.01071em",
-              marginTop: "0.7rem",
-            }}
-          >
-            {details?.content}
-          </p>
-          <Grid
+          <CardMedia
+            component="img"
+            alt={details?.title}
+            height="250"
             sx={{
+              width: "fit-content",
+              margin: "auto",
+              marginTop: "0.5rem",
+              marginBottom: "-2rem",
+            }}
+            image={details?.image}
+          />
+          <CardContent
+            sx={{
+              marginTop: "2rem",
+              height: 390,
               display: "flex",
-              alignItems: "center",
+              flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <AccountCircleIcon />
-              <Typography variant="body2" color="text.secondary">
-                {username}
-              </Typography>
-            </Box>
             <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ marginTop: "2rem", marginBottom: "1rem" }}
+              gutterBottom
+              variant="h5"
+              component="div"
+              sx={{ textAlign: "center" }}
             >
-              {info?.date} {info?.time}
+              {details?.title}
             </Typography>
-          </Grid>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-          }}
-        >
-          <Grid
-            item
-            xs={8}
-            sx={{
-              width: "8rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            <IconButton
-              sx={{ color: likeClicked ? "red" : "default" }}
-              onClick={handleLikeClick}
-              aria-label="add to favorites"
-            >
-              <FavoriteIcon />
-            </IconButton>
-            <Typography sx={{ marginLeft: "-0.4rem" }}>
-              {likesOfThisBlog?.length}
-            </Typography>
-            <IconButton
-              sx={{ marginLeft: "0.5rem" }}
-              aria-label="comment"
-              onClick={() => setCommentsOpened(!commentsOpened)}
-            >
-              <ChatIcon />
-            </IconButton>
-            <Typography sx={{ marginLeft: "-0.4rem" }}>
-              {details?.comments?.length}
-            </Typography>
-            <IconButton sx={{ marginLeft: ".5rem" }} aria-label="visibility">
-              <VisibilityOutlinedIcon />
-            </IconButton>
-            <Typography sx={{ marginLeft: "-0.4rem" }}>
-              {details?.post_views}
-            </Typography>
-          </Grid>
-          <Grid>
-            <Button
-              onClick={handleWriteCommentOpen}
-              size="medium"
-              variant="contained"
-              sx={{
-                marginBottom: "1.2rem",
-                backgroundColor: "#0068e3",
-                color: "white",
-                "&:hover": { backgroundColor: "#4290f0", color: "#ffcd44" },
+            <p
+              style={{
+                fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+                overflow: "scroll",
+                display: "-webkit-box",
+                WebkitLineClamp: 12,
+                WebkitBoxOrient: "vertical",
+                color: "gray",
+                fontWeight: "400",
+                fontSize: "0.875rem",
+                lineHeight: 1.43,
+                letterSpacing: "0.01071em",
+                marginTop: "0.7rem",
               }}
             >
-              Write Comment
-            </Button>
-          </Grid>
-          {currentUser === username && (
-            <Grid sx={{ width: "8rem" }}>
-              <IconButton
-                aria-label="edit"
-                sx={{
-                  marginBottom: "1rem",
-                  "&:hover": { color: "green", scale: "1.2" },
-                }}
-                onClick={handleOpenUpdateModal}
+              {details?.content}
+            </p>
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <AccountCircleIcon />
+                <Typography variant="body2" color="text.secondary">
+                  {username}
+                </Typography>
+              </Box>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ marginTop: "2rem", marginBottom: "1rem" }}
               >
-                <EditIcon />
-              </IconButton>
-
-              <IconButton
-                onClick={() => deleteBlogData("blogs", id)}
-                sx={{
-                  marginBottom: ".8rem",
-                  marginInlineStart: "1rem",
-                  "&:hover": { color: "red", scale: "1.2" },
-                }}
-                aria-label="delete"
-              >
-                <DeleteIcon />
-              </IconButton>
+                {info?.date} {info?.time}
+              </Typography>
             </Grid>
-          )}
-        </CardActions>
-      </Card>
-      {addCommentsOpened && (
-        <AddCommentForm
-          id={id}
-          commentsInfo={commentsInfo}
-          setCommentsInfo={setCommentsInfo}
-          handleAddCommentClose={handleAddCommentClose}
-        />
-      )}
-      {commentsOpened &&
-        relatedComments?.map((comment) => (
-          <Grid item key={comment.id} sx={{ marginTop: "1rem" }}>
-            <CommentsCard entry={comment} {...comment} ip={ip} />
-          </Grid>
-        ))}
+          </CardContent>
+          <CardActions
+            sx={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+            }}
+          >
+            <Grid
+              item
+              xs={8}
+              sx={{
+                width: "8rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <IconButton
+                sx={{ color: likeClicked ? "red" : "default" }}
+                onClick={handleLikeClick}
+                aria-label="add to favorites"
+              >
+                <FavoriteIcon />
+              </IconButton>
+              <Typography sx={{ marginLeft: "-0.4rem" }}>
+                {likesOfThisBlog?.length}
+              </Typography>
+              <IconButton
+                sx={{ marginLeft: "0.5rem" }}
+                aria-label="comment"
+                onClick={() => setCommentsOpened(!commentsOpened)}
+              >
+                <ChatIcon />
+              </IconButton>
+              <Typography sx={{ marginLeft: "-0.4rem" }}>
+                {details?.comments?.length}
+              </Typography>
+              <IconButton sx={{ marginLeft: ".5rem" }} aria-label="visibility">
+                <VisibilityOutlinedIcon />
+              </IconButton>
+              <Typography sx={{ marginLeft: "-0.4rem" }}>
+                {details?.post_views}
+              </Typography>
+            </Grid>
+            <Grid>
+              <Button
+                onClick={handleWriteCommentOpen}
+                size="medium"
+                variant="contained"
+                sx={{
+                  marginBottom: "1.2rem",
+                  backgroundColor: "#0068e3",
+                  color: "white",
+                  "&:hover": { backgroundColor: "#4290f0", color: "#ffcd44" },
+                }}
+              >
+                Write Comment
+              </Button>
+            </Grid>
+            {currentUser === username && (
+              <Grid sx={{ width: "8rem" }}>
+                <IconButton
+                  aria-label="edit"
+                  sx={{
+                    marginBottom: "1rem",
+                    "&:hover": { color: "green", scale: "1.2" },
+                  }}
+                  onClick={handleOpenUpdateModal}
+                >
+                  <EditIcon />
+                </IconButton>
 
-      <Grid
-        item
-        xs={4}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "3rem",
-          marginBottom: "3rem",
-        }}
-      >
-        <Button
-          size="medium"
-          onClick={() => navigate(-1)}
-          variant="contained"
-          sx={{ "&:hover": { backgroundColor: "#e2e55e" } }}
+                <IconButton
+                  onClick={() => deleteBlogData("blogs", id)}
+                  sx={{
+                    marginBottom: ".8rem",
+                    marginInlineStart: "1rem",
+                    "&:hover": { color: "red", scale: "1.2" },
+                  }}
+                  aria-label="delete"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            )}
+          </CardActions>
+        </Card>
+        {addCommentsOpened && (
+          <AddCommentForm
+            id={id}
+            commentsInfo={commentsInfo}
+            setCommentsInfo={setCommentsInfo}
+            handleAddCommentClose={handleAddCommentClose}
+          />
+        )}
+        {commentsOpened &&
+          relatedComments?.map((comment) => (
+            <Grid item key={comment.id} sx={{ marginTop: "1rem" }}>
+              <CommentsCard entry={comment} {...comment} ip={ip} />
+            </Grid>
+          ))}
+
+        <Grid
+          item
+          xs={4}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem",
+          }}
         >
-          Go Back
-        </Button>
-      </Grid>
+          <Button
+            size="medium"
+            onClick={() => navigate(-1)}
+            variant="contained"
+            sx={{ "&:hover": { backgroundColor: "#e2e55e" } }}
+          >
+            Go Back
+          </Button>
+        </Grid>
 
-      <UpdateModal
-        open={openUpdateModal}
-        handleClose={handleModalClose}
-        info={info}
-        setInfo={setInfo}
-      />
-    </Container>
+        <UpdateModal
+          open={openUpdateModal}
+          handleClose={handleModalClose}
+          info={info}
+          setInfo={setInfo}
+        />
+      </Container>
+    </Box>
   );
 };
 
