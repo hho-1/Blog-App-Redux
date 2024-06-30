@@ -13,8 +13,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useBlogCall from "../../hooks/useBlogCall";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import useIPAddress from "../../hooks/useIPAddress";
 
 export default function ImgMediaCard({
@@ -29,9 +28,7 @@ export default function ImgMediaCard({
   post_views,
 }) {
   const date = createdAt?.slice(0, 10);
-  //console.log(date);
   const time = createdAt?.slice(11, 19);
-  //console.log(time);
 
   const {
     getContributions,
@@ -41,64 +38,36 @@ export default function ImgMediaCard({
     deleteLikesData,
   } = useBlogCall();
 
-  let navigate = useNavigate();
-
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
-  // console.log(userId)
-
   const { users, likes } = useSelector((state) => state.blog);
-
   const { ip } = useIPAddress();
-
   const [likeClicked, setLikeClicked] = useState(false);
 
-  
   const username =
     users.find((user) => user._id === user_id)?.username || "Unknown";
-  const userId = users.find((user) => user.username === currentUser)?._id;
-
-  // console.log(username)
-  // console.log(userId)
-
-  /* const [likesInfo, setLikesInfo] = useState({
-      contribution_id: id,
-      user_id: "",
-      differ: ""
-    }) */
+  const userId = users.find((user) => user.username === currentUser)?.id;
 
   useEffect(() => {
     getContributions();
     getUsers();
     getLikes();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  
-
   useEffect(() => {
-
-    handleInitialLikes();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [likes]);
-
-  async function handleInitialLikes() {
-    if (
-      likes.some(
+    if (likes.length) {
+      const userLiked = likes.some(
         (like) => like.user_id === userId && like.contribution_id === id
-      ) ||
-      likes.some((like) => like.differ === ip && like.contribution_id === id)
-    ) {
-      setLikeClicked(true);
-    } else {
-      setLikeClicked(false);
+      );
+      const ipLiked = likes.some(
+        (like) => like.differ === ip && like.contribution_id === id
+      );
+      setLikeClicked(userLiked || ipLiked);
     }
-  }
-
+  }, [likes, userId, id, ip]);
 
   const handleLikeClick = async () => {
-    setLikeClicked(!likeClicked);
+    setLikeClicked((prev) => !prev);
 
     if (!likeClicked) {
       const likeObject = userId
@@ -106,15 +75,21 @@ export default function ImgMediaCard({
         : { contribution_id: id, differ: ip };
       await postLikesData("likes", likeObject);
     } else {
-      const likeID = await likes.find(
+      const likeToDelete = likes.find(
         (like) =>
           (userId ? like.user_id === userId : like.differ === ip) &&
           like.contribution_id === id
       );
-      console.log(likeID)
-      await deleteLikesData("likes", likeID?._id);
+      const likeID = likeToDelete?._id; 
+      console.log("Deleting like with ID:", likeID); 
+      if (likeID) {
+        await deleteLikesData("likes", likeID);
+      } else {
+        console.error("Like ID is undefined. Cannot delete like.");
+      }
     }
   };
+
 
   return (
     <Card
@@ -191,23 +166,13 @@ export default function ImgMediaCard({
             marginInlineStart: "-0.5rem",
           }}
         >
-          {likeClicked ? (
-            <IconButton
-              aria-label="add to favorites"
-              sx={{ color: "red" }}
-              onClick={handleLikeClick}
-            >
-              <FavoriteIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              aria-label="add to favorites"
-              onClick={handleLikeClick}
-            >
-              <FavoriteIcon />
-            </IconButton>
-          )}
-
+          <IconButton
+            aria-label="add to favorites"
+            sx={{ color: likeClicked ? "red" : "default" }}
+            onClick={handleLikeClick}
+          >
+            <FavoriteIcon />
+          </IconButton>
           <Typography sx={{ marginInlineStart: "-0.4rem" }}>
             {likes_count}
           </Typography>

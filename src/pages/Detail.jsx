@@ -29,9 +29,9 @@ const Detail = () => {
   const { currentUser } = useSelector((state) => state.auth);
 
   const { id } = useParams();
-  //console.log(id);
-
-  const { contributions } = useSelector((state) => state.blog);
+  const { contributions, users, likes, comments } = useSelector(
+    (state) => state.blog
+  );
 
   const [info, setInfo] = useState({
     id: "",
@@ -49,13 +49,23 @@ const Detail = () => {
     post_views: 0,
   });
 
-  let navigate = useNavigate();
-
   const [details, setDetails] = useState("");
-
-  const { users } = useSelector((state) => state.blog);
-  const { likes } = useSelector((state) => state.blog);
-  const { comments } = useSelector((state) => state.blog);
+  const [username, setUsername] = useState("");
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [commentsInfo, setCommentsInfo] = useState({
+    contribution_id: id,
+    content: "",
+    title: "",
+    user_id: "",
+    username: "",
+    likes_num: 0,
+    dislikes_num: 0,
+    comment_likes: [],
+    comment_dislikes: [],
+  });
+  const [commentsOpened, setCommentsOpened] = useState(false);
+  const [addCommentsOpened, setAddCommentsOpened] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const {
     deleteBlogData,
@@ -66,8 +76,8 @@ const Detail = () => {
     postLikesData,
     deleteLikesData,
   } = useBlogCall();
-
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const { ip } = useIPAddress();
+  const navigate = useNavigate();
 
   const handleOpenUpdateModal = () => setOpenUpdateModal(true);
 
@@ -81,63 +91,6 @@ const Detail = () => {
       content: "",
     });
   };
-
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    //axios ile setDetails birlikte useEffect disinda olursa sonsuz döngü olur
-
-    const data = contributions.filter((item) => {
-      return item.id === id;
-    });
-    setDetails(data[0]);
-    //console.log(data);
-
-    const username = users.filter((user) => {
-      return user._id === data[0].user_id;
-    });
-    setUsername(username[0]?.username || "Deleted User");
-
-    getComments();
-    getUsers();
-
-    setInfo({
-      id: data[0]?.id,
-      title: data[0]?.title,
-      image: data[0]?.image,
-      category_id: data[0]?.category_id,
-      status_id: data[0]?.status_id,
-      content: data[0]?.content,
-      comments: data[0]?.comments,
-      likes_count: data[0]?.likes_count,
-      date: data[0]?.publish_date.slice(0, 10),
-      time: data[0]?.publish_date.slice(11, 19),
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  //-------------------------------------------------------------------------------
-  const userId = users.filter((user) => {
-    return user.username === currentUser;
-  });
-
-  const relatedComments =
-    comments.length && comments.filter((comm) => comm.contribution_id === id);
-
-  const [commentsInfo, setCommentsInfo] = useState({
-    contribution_id: id,
-    content: "",
-    title: "",
-    user_id: "",
-    username: "",
-    likes_num: 0,
-    dislikes_num: 0,
-    comment_likes: [],
-    comment_dislikes: [],
-  });
-  const [commentsOpened, setCommentsOpened] = useState(false);
-
-  const [addCommentsOpened, setAddCommentsOpened] = useState(false);
 
   const handleAddCommentClose = () => {
     setAddCommentsOpened(false);
@@ -162,90 +115,76 @@ const Detail = () => {
     }
   };
 
-  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  const userId = users.filter((user) => {
+    return user.username === currentUser;
+  });
 
-  const { ip } = useIPAddress();
-
+  const relatedComments =
+    comments.length && comments.filter((comm) => comm.contribution_id === id);
   const likesOfThisBlog = likes?.filter((like) => like.contribution_id === id);
-  //console.log(likesOfThisBlog.length)
-
-  const [likeClicked, setLikeClicked] = useState(false);
-
-  /* const [likesInfo, setLikesInfo] = useState({
-      contribution_id: id,
-      user_id: "",
-      differ: ""
-    }) */
 
   useEffect(() => {
-    if (
-      likes?.filter(
-        (like) => like.user_id === userId[0]?.id && like.contribution_id === id
-      ).length
-    ) {
-      setLikeClicked(true);
-    } else if (!userId[0]?.id) {
-      if (
-        likes?.filter(
-          (like) => like.differ === ip && like.contribution_id === id
-        ).length
-      )
-        setLikeClicked(true);
-      else setLikeClicked(false);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [likes]);
-
-  useEffect(() => {
+    // Bileşen yüklendiğinde gerekli verileri getir
     getContributions();
     getUsers();
     getLikes();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getComments();
   }, []);
+
+  useEffect(() => {
+    // Bağımlılıklar değiştiğinde 'contributions' ve 'users' verileri güncellenmiş olur
+    const data = contributions.filter((item) => item.id === id);
+    setDetails(data[0]);
+
+    const user = users.find((user) => user._id === data[0]?.user_id);
+    setUsername(user?.username || "Deleted User");
+
+    setInfo({
+      id: data[0]?.id,
+      title: data[0]?.title,
+      image: data[0]?.image,
+      category_id: data[0]?.category_id,
+      status_id: data[0]?.status_id,
+      content: data[0]?.content,
+      comments: data[0]?.comments,
+      likes_count: data[0]?.likes_count,
+      date: data[0]?.publish_date.slice(0, 10),
+      time: data[0]?.publish_date.slice(11, 19),
+    });
+  }, [contributions, users, id]);
+
+  useEffect(() => {
+    // likes değiştiğinde 'likeClicked' state güncellenir
+    const userLiked = likes.some(
+      (like) => like.user_id === userId[0]?.id && like.contribution_id === id
+    );
+    const ipLiked = likes.some(
+      (like) => like.differ === ip && like.contribution_id === id
+    );
+
+    setLikeClicked(userLiked || ipLiked);
+  }, [likes, userId, id, ip]);
 
   const handleLikeClick = () => {
     setLikeClicked(!likeClicked);
 
     if (!likeClicked) {
       const likeObject = userId[0]?.id
-        ? {
-            contribution_id: id,
-            user_id: userId[0]?.id || "",
-          }
-        : {
-            contribution_id: id,
-            differ: ip,
-          };
-      /* setLikesInfo({
-          contribution_id: id,
-          user_id: userId[0]?.id || "",
-          differ: userId[0]?.id ? "" : ip
-        }) */
+        ? { contribution_id: id, user_id: userId[0]?.id || "" }
+        : { contribution_id: id, differ: ip };
       postLikesData("likes", likeObject);
     } else {
       const likeID = userId[0]?.id
-        ? likes.filter(
+        ? likes.find(
             (like) =>
               like.user_id === userId[0]?.id && like.contribution_id === id
-          )
-        : likes.filter(
+          )._id
+        : likes.find(
             (like) => like.differ === ip && like.contribution_id === id
-          );
-      //console.log(likes)
-      //console.log(likeID)
-      deleteLikesData("likes", likeID[0]?._id);
+          )._id;
+      deleteLikesData("likes", likeID);
     }
   };
-
-  useEffect(() => {
-    getContributions();
-    getUsers();
-    getLikes();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Container sx={{ minHeight: "80vh" }}>
@@ -292,7 +231,6 @@ const Detail = () => {
             style={{
               fontFamily: "Roboto, Helvetica, Arial, sans-serif",
               overflow: "scroll",
-              //textOverflow: "ellipsis",
               display: "-webkit-box",
               WebkitLineClamp: 12,
               WebkitBoxOrient: "vertical",
@@ -345,22 +283,13 @@ const Detail = () => {
               justifyContent: "flex-start",
             }}
           >
-            {likeClicked ? (
-              <IconButton
-                sx={{ color: "red" }}
-                onClick={handleLikeClick}
-                aria-label="add to favorites"
-              >
-                <FavoriteIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                onClick={handleLikeClick}
-                aria-label="add to favorites"
-              >
-                <FavoriteIcon />
-              </IconButton>
-            )}
+            <IconButton
+              sx={{ color: likeClicked ? "red" : "default" }}
+              onClick={handleLikeClick}
+              aria-label="add to favorites"
+            >
+              <FavoriteIcon />
+            </IconButton>
             <Typography sx={{ marginLeft: "-0.4rem" }}>
               {likesOfThisBlog?.length}
             </Typography>
@@ -468,7 +397,5 @@ const Detail = () => {
     </Container>
   );
 };
-
-//'&:nth-child(odd)':{backgroundColor:'beige'}
 
 export default Detail;
