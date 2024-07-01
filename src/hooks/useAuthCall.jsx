@@ -65,13 +65,13 @@ const useAuthCall = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axios.post(
-        `${BASE_URL}/register/`,
+        `${BASE_URL}/auth/register/`,
         userInfo
       );
       dispatch(registerSuccess(data));
       //console.log(data);
-      toastSuccessNotify("Register performed");
-      navigate("/");
+      toastSuccessNotify("Register performed. Please sign in.");
+      navigate("/auth");
     } catch (err) {
       dispatch(fetchFail());
       if (err.response.status === 400) {

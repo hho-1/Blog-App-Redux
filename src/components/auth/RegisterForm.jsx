@@ -62,14 +62,31 @@ const RegisterForm = ({setAuthType}) => {
   });
 
   return (
-    <Container >
+    <Container
+      sx={{ width: "500px", backgroundColor: "primary.backgroundSecondary" }}
+    >
       <form onSubmit={formik.handleSubmit}>
-        <Box sx={{textAlign: 'center'}}>
-          <LockIcon sx={{width:50, height:50, padding: 0.8, borderRadius: '50%', backgroundColor:'#ffcd44'}}/>
+        <Box sx={{ textAlign: "center" }}>
+          <LockIcon
+            sx={{
+              width: 50,
+              height: 50,
+              padding: 0.8,
+              borderRadius: "50%",
+              backgroundColor: "#ffcd44",
+            }}
+          />
         </Box>
-        
-        <Typography sx={{marginBottom: 4, textAlign:'center'}} variant='h4' >
-          Sign up 
+
+        <Typography
+          sx={{
+            marginBottom: 4,
+            textAlign: "center",
+            color: "primary.textMain",
+          }}
+          variant="h4"
+        >
+          Sign up
         </Typography>
         <TextField
           fullWidth
@@ -83,7 +100,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.username && formik.errors.username}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="first_name"
           name="first_name"
@@ -95,7 +112,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.first_name && formik.errors.first_name}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="last_name"
           name="last_name"
@@ -107,7 +124,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.last_name && formik.errors.last_name}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="email"
           name="email"
@@ -119,7 +136,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.email && formik.errors.email}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="image"
           name="image"
@@ -131,7 +148,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.image && formik.errors.image}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="bio"
           name="bio"
@@ -143,7 +160,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.bio && formik.errors.bio}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="password"
           name="password"
@@ -156,7 +173,7 @@ const RegisterForm = ({setAuthType}) => {
           helperText={formik.touched.password && formik.errors.password}
         />
         <TextField
-          sx={{marginTop:1}}
+          sx={{ marginTop: 1 }}
           fullWidth
           id="password2"
           name="password2"
@@ -168,11 +185,32 @@ const RegisterForm = ({setAuthType}) => {
           error={formik.touched.password2 && Boolean(formik.errors.password2)}
           helperText={formik.touched.password2 && formik.errors.password2}
         />
-        <Button color="primary" variant="contained" fullWidth type="submit" sx={{marginTop: 3, "&:hover": {backgroundColor:'#57c1ff'}}}>
+        <Button
+          color="primary"
+          variant="contained"
+          fullWidth
+          type="submit"
+          sx={{
+            marginTop: 3,
+            "&:hover": { backgroundColor: "primary.buttonHover" },
+          }}
+        >
           Sign Up
         </Button>
-        <Typography sx={{marginTop: 1, textAlign:'center'}}>
-          Already have an account? <Link underline="none" onClick={()=>setAuthType('login')} sx={{cursor: 'pointer', "&:hover": {color:'#57c1ff'}}}>Sign In</Link> 
+        <Typography
+          sx={{ marginTop: 1, textAlign: "center", color: "primary.textMain" }}
+        >
+          Already have an account?{" "}
+          <Link
+            underline="none"
+            onClick={() => setAuthType("login")}
+            sx={{
+              cursor: "pointer",
+              "&:hover": { color: "primary.buttonHover" },
+            }}
+          >
+            Sign In
+          </Link>
         </Typography>
       </form>
     </Container>
