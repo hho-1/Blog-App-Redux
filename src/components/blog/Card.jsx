@@ -36,6 +36,7 @@ export default function ImgMediaCard({
     getLikes,
     postLikesData,
     deleteLikesData,
+    updateBlogPostViews,
   } = useBlogCall();
 
   const navigate = useNavigate();
@@ -89,6 +90,18 @@ export default function ImgMediaCard({
       }
     }
   };
+  //console.log(post_views)
+
+  function increasePostViews(views) {
+    
+    return Number(views + 1);
+  }
+  
+
+  function handleReadMoreClick() {
+    navigate("/blogs/" + id)
+    updateBlogPostViews(`/blogs/${id}`, { post_views: increasePostViews(post_views) });
+  }
 
 
   return (
@@ -192,7 +205,7 @@ export default function ImgMediaCard({
         </Grid>
         <Grid item xs={4}>
           <Button
-            onClick={() => navigate("/blogs/" + id)}
+            onClick={()=>handleReadMoreClick()}
             size="small"
             variant="contained"
             sx={{ "&:hover": { backgroundColor: "primary.buttonHover" } }}

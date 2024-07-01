@@ -250,6 +250,19 @@ const useBlogCall = () => {
       console.log(error)
     }
   }
+  const updateBlogPostViews = async (url, info) => {
+    dispatch(fetchStart());
+    try {
+      const data = await axiosWithPublic.patch(url, info);
+      getContributions();
+      
+      dispatch(contributionsSuccess({ data, url }));
+    } catch (error) {
+      dispatch(fetchFail());
+      
+      console.log(error);
+    }
+  };
   const deleteBlogData = async (url, id) => {
     dispatch(fetchStart())
     try {
@@ -265,7 +278,6 @@ const useBlogCall = () => {
 
 
   return {
-  
     getContributions,
     getCategories,
     postBlogData,
@@ -277,14 +289,14 @@ const useBlogCall = () => {
     deleteCommentLikesData,
     deleteCommentDislikesData,
     putBlogData,
+    updateBlogPostViews,
     getComments,
     getLikes,
     getStatus,
     getUsers,
     getCommentLikes,
     getCommentDislikes,
-    deleteBlogData
-    
+    deleteBlogData,
   };
 };
 

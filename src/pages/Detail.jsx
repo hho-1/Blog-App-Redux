@@ -28,7 +28,6 @@ import DeleteBlogModal from "../components/blog/DeleteBlogModal";
 
 const Detail = () => {
   const { currentUser } = useSelector((state) => state.auth);
-
   const { id } = useParams();
   const { contributions, users, likes, comments } = useSelector(
     (state) => state.blog
@@ -133,7 +132,9 @@ const Detail = () => {
 
   useEffect(() => {
     // Bağımlılıklar değiştiğinde 'contributions' ve 'users' verileri güncellenmiş olur
-    const data = contributions?.filter((item) => item.id === id);
+    const data = Array.isArray(contributions)
+      ? contributions.filter((item) => item.id === id)
+      : [];
     setDetails(data[0]);
 
     const user = users.find((user) => user._id === data[0]?.user_id);
