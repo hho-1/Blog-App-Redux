@@ -100,7 +100,7 @@ export default function ImgMediaCard({
         flexDirection: "column",
         justifyContent: "space-between",
         margin: "1rem",
-        backgroundColor: "primary.backgroundSecondary"
+        backgroundColor: "primary.backgroundSecondary",
       }}
     >
       <CardMedia
@@ -124,15 +124,15 @@ export default function ImgMediaCard({
         >
           {title}
         </Typography>
-        <p
-          style={{
+        <Typography
+          sx={{
             fontFamily: "Roboto, Helvetica, Arial, sans-serif",
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
-            color: "darkgray",
+            color: "primary.textMain",
             fontWeight: "400",
             fontSize: "0.875rem",
             lineHeight: 1.43,
@@ -141,7 +141,7 @@ export default function ImgMediaCard({
           }}
         >
           {content}
-        </p>
+        </Typography>
         <Typography
           variant="body2"
           color="text.secondary"

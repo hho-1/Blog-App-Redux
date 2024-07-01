@@ -35,94 +35,108 @@ export default function UpdateModal({ open, handleClose, info, setInfo, user }) 
       <Modal
         open={open}
         onClose={() => {
-            setInfo({})
-          handleClose()
+          setInfo({});
+          handleClose();
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{width: 500, height: 550, margin:'auto', backgroundColor:'white'}}>
-            <Box sx={{width: 450, margin: 'auto', marginTop:'10rem', backgroundColor:'white'}}>
-          
-                <Box component="form" onSubmit={handleSubmit}>
-                    <Typography sx={{marginBottom: 4, textAlign:'center'}} variant='h4' >
-                        Update User 
-                    </Typography>
-                    <TextField
-                        fullWidth
-                        id="username"
-                        name="username"
-                        label="Username"
-                        value={info?.username || ""}
-                        onChange={handleChange}
-                        required
-                    />
-                    <TextField
-                        sx={{marginTop:1}}
-                        fullWidth
-                        id="first_name"
-                        name="first_name"
-                        label="first_name"
-                        value={info?.first_name || ""}
-                        onChange={handleChange}
-                        required
-            
-                    /> 
-                    <TextField
-                        sx={{marginTop:1}}
-                        fullWidth
-                        id="last_name"
-                        name="last_name"
-                        label="last_name"
-                        value={info?.last_name || ""}
-                        onChange={handleChange}
-                        required
-            
-                    /> 
-                    <TextField
-                        sx={{marginTop:1}}
-                        fullWidth
-                        id="email"
-                        name="email"
-                        label="email"
-                        value={info?.email || ""}
-                        onChange={handleChange}
-                        required
-            
-                    /> 
-                    <TextField
-                        sx={{marginTop:1}}
-                        fullWidth
-                        id="image"
-                        name="image"
-                        label="image"
-                        value={info?.image || ""}
-                        onChange={handleChange}
-            
-                    /> 
-                    
-                    
-                    <TextField
-                      sx={{marginTop:1, width:450}}
-                      id="bio"
-                      label="bio"
-                      name="bio"
-                      multiline
-                      rows={2}
-                      value={info?.bio || ""}
-                      onChange={handleChange}
-                            
-                    />
+        <Box
+          sx={{
+            width: 500,
+            height: 550,
+            margin: "auto",
+            backgroundColor: "primary.updateBlogBackground",
+          }}
+        >
+          <Box
+            sx={{
+              width: 450,
+              margin: "auto",
+              marginTop: "10rem",
+              backgroundColor: "primary.updateBlogBackground",
+            }}
+          >
+            <Box component="form" onSubmit={handleSubmit}>
+              <Typography
+                sx={{ marginBottom: 4, textAlign: "center", color:"primary.textMain" }}
+                variant="h4"
+              >
+                Update User
+              </Typography>
+              <TextField
+                fullWidth
+                id="username"
+                name="username"
+                label="Username"
+                value={info?.username || ""}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                sx={{ marginTop: 1 }}
+                fullWidth
+                id="first_name"
+                name="first_name"
+                label="first_name"
+                value={info?.first_name || ""}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                sx={{ marginTop: 1 }}
+                fullWidth
+                id="last_name"
+                name="last_name"
+                label="last_name"
+                value={info?.last_name || ""}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                sx={{ marginTop: 1 }}
+                fullWidth
+                id="email"
+                name="email"
+                label="email"
+                value={info?.email || ""}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                sx={{ marginTop: 1 }}
+                fullWidth
+                id="image"
+                name="image"
+                label="image"
+                value={info?.image || ""}
+                onChange={handleChange}
+              />
 
-                    <Button color="primary" variant="contained" fullWidth type="submit" sx={{marginTop: 2, "&:hover": {backgroundColor:'#57c1ff'}}}>
-                      Update User
-                    </Button>
-                            
-                </Box>
+              <TextField
+                sx={{ marginTop: 1, width: 450 }}
+                id="bio"
+                label="bio"
+                name="bio"
+                multiline
+                rows={2}
+                value={info?.bio || ""}
+                onChange={handleChange}
+              />
+
+              <Button
+                color="primary"
+                variant="contained"
+                fullWidth
+                type="submit"
+                sx={{ marginTop: 2, "&:hover": { backgroundColor: "#57c1ff" } }}
+              >
+                Update User
+              </Button>
             </Box>
+          </Box>
         </Box>
-        
       </Modal>
     </Box>
-  )
+  );
 }

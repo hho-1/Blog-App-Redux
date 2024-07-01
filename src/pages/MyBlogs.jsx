@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Button, Container, Grid } from '@mui/material'
+import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
@@ -38,8 +38,8 @@ const MyBlogs = () => {
   }, []);
 
   return (
-    <Box sx={{ backgroundColor: "primary.backgroundMain", padding: "2rem" }}>
-      <Container sx={{ height: "fit-content", minHeight: "75vh" }}>
+    <Box sx={{ backgroundColor: "primary.backgroundMain", padding:"2rem" }}>
+      <Container sx={{ height: "fit-content", minHeight: "77vh" }}>
         <Grid
           container
           alignItems="center"
@@ -48,11 +48,36 @@ const MyBlogs = () => {
           spacing={3}
           mt={3}
         >
-          {myBlogs?.map((item) => (
-            <Grid item key={item.id}>
-              <ImgMediaCard entry={item} {...item} />
+          {myBlogs.length ? (
+            myBlogs?.map((item) => (
+              <Grid item key={item.id}>
+                <ImgMediaCard entry={item} {...item} />
+              </Grid>
+            ))
+          ) : (
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography sx={{ color: "primary.textMain" }} variant="h5">
+                You don't have any written blogs.
+              </Typography>
+              <Button
+                sx={{
+                  backgroundColor: "primary.buttonColor",
+                  color: "#000",
+                  margin: "3rem",
+                  "&:hover": { color: "primary.textMain", backgroundColor:"primary.buttonHover" },
+                }}
+              >
+                Write something
+              </Button>
             </Grid>
-          ))}
+          )}
         </Grid>
         <Grid
           item

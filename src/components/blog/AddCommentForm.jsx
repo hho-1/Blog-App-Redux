@@ -82,7 +82,7 @@ const AddCommentForm = ({id, commentsInfo, setCommentsInfo, handleAddCommentClos
           sx={{
               marginTop: 3,
               color: "primary.textMain",
-            backgroundColor: "primary.backgroundSecondary",
+            backgroundColor: "primary.buttonColor",
             "&:hover": { backgroundColor: "primary.buttonHover" },
           }}
         >

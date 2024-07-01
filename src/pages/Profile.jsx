@@ -1,5 +1,5 @@
 /* eslint-disable react/style-prop-object */
-import { Button, Card, CardContent, CardMedia, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import UpdateModal from '../components/auth/UserUpdateModal';
@@ -60,31 +60,65 @@ const Profile = () => {
   }, []);
 
   return (
-    <Container sx={{height:'82vh'}}>
-      <Card sx={{height:'50vh', width: '20vw', marginTop: '10rem', mx:'auto'}}>
-        <CardMedia
-          component="img"
-          alt={relatedUser[0]?.username}
-          height="130em"
-          sx={{width:'fit-content', margin:'auto', marginTop:'0.5rem'}}
-          image={relatedUser[0]?.image}
+    <Box
+      sx={{ backgroundColor: "primary.backgroundMain", paddingTop: "10rem" }}
+    >
+      <Container sx={{ minHeight: "68vh" }}>
+        <Card sx={{ minHeight: "50vh", width: "25vw", mx: "auto" }}>
+          <CardMedia
+            component="img"
+            alt={relatedUser[0]?.username}
+            height="130em"
+            sx={{ width: "fit-content", margin: "auto", marginTop: "0.5rem" }}
+            image={relatedUser[0]?.image}
+          />
+          <CardContent>
+            <Typography sx={{ wordWrap: "break-word" }} variant="h5">
+              <span style={{ color: "red" }}>User ID:</span>{" "}
+              {relatedUser[0]?.id}
+            </Typography>
+            <Typography sx={{ wordWrap: "break-word" }} variant="h5">
+              <span style={{ color: "red" }}>Username:</span>{" "}
+              {relatedUser[0]?.username}
+            </Typography>
+            <Typography sx={{ wordWrap: "break-word" }} variant="h5">
+              <span style={{ color: "red" }}>First Name:</span>{" "}
+              {relatedUser[0]?.first_name || ""}
+            </Typography>
+            <Typography sx={{ wordWrap: "break-word" }} variant="h5">
+              <span style={{ color: "red" }}>Last Name:</span>{" "}
+              {relatedUser[0]?.last_name || ""}
+            </Typography>
+            <Typography sx={{ wordWrap: "break-word" }} variant="h5">
+              <span style={{ color: "red" }}>Email:</span>{" "}
+              {relatedUser[0]?.email || ""}
+            </Typography>
+            <Typography sx={{ wordWrap: "break-word" }} variant="h5">
+              <span style={{ color: "red" }}>Bio:</span>{" "}
+              {relatedUser[0]?.bio || ""}
+            </Typography>
+          </CardContent>
+          <Grid item xs={4} sx={{ display:"flex", justifyContent:"center" }}>
+            <Button
+              size="medium"
+              variant="contained"
+              sx={{ "&:hover": { backgroundColor: "primary.buttonHover" } }}
+              onClick={handleOpenUpdateModal}
+            >
+              Edit
+            </Button>
+          </Grid>
+        </Card>
+        <UpdateModal
+          open={openUpdateModal}
+          handleClose={handleModalClose}
+          info={info}
+          setInfo={setInfo}
+          user={user}
         />
-        <CardContent>
-          <Typography variant='h5'><span style={{color:'red'}}>User ID:</span> {relatedUser[0]?.id}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Username:</span> {relatedUser[0]?.username}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>First Name:</span> {relatedUser[0]?.first_name || ""}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Last Name:</span> {relatedUser[0]?.last_name || ""}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Email:</span> {relatedUser[0]?.email || ""}</Typography>
-          <Typography variant='h5'><span style={{color:'red'}}>Bio:</span> {relatedUser[0]?.bio || ""}</Typography>
-        </CardContent>
-        <Grid item xs={4} sx={{marginInline: '8vw', marginTop:'4rem'}}>
-          <Button size="medium"  variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}  onClick={handleOpenUpdateModal}>Edit</Button>
-        </Grid>
-      </Card>
-      <UpdateModal open={openUpdateModal} handleClose={handleModalClose} info={info} setInfo={setInfo} user={user}/>
-    </Container>
-    
-  )
+      </Container>
+    </Box>
+  );
 }
 
 export default Profile

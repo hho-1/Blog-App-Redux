@@ -90,7 +90,7 @@ function ResponsiveAppBar({ setAuthType }) {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{backgroundColor:"primary.navbarBackground"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {darkMode ? (
