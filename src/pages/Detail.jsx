@@ -24,6 +24,7 @@ import useBlogCall from "../hooks/useBlogCall";
 import CommentsCard from "../components/blog/CommentsCard";
 import AddCommentForm from "../components/blog/AddCommentForm";
 import useIPAddress from "../hooks/useIPAddress";
+import DeleteBlogModal from "../components/blog/DeleteBlogModal";
 
 const Detail = () => {
   const { currentUser } = useSelector((state) => state.auth);
@@ -68,7 +69,6 @@ const Detail = () => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const {
-    deleteBlogData,
     getComments,
     getUsers,
     getLikes,
@@ -186,7 +186,9 @@ const Detail = () => {
     }
   };
 
-  const darkMode = useSelector((state) => state.theme.darkMode);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   return (
     <Box sx={{ backgroundColor: "primary.backgroundMain", padding: "2rem" }}>
@@ -199,7 +201,6 @@ const Detail = () => {
             mx: "auto",
             marginTop: "1rem",
             backgroundColor: "primary.backgroundSecondary",
-            
           }}
         >
           <CardMedia
@@ -231,14 +232,14 @@ const Detail = () => {
             >
               {details?.title}
             </Typography>
-            <p
-              style={{
+            <Typography
+              sx={{
                 fontFamily: "Roboto, Helvetica, Arial, sans-serif",
                 overflow: "scroll",
                 display: "-webkit-box",
                 WebkitLineClamp: 12,
                 WebkitBoxOrient: "vertical",
-                color: "gray",
+                color: "primary.textMain",
                 fontWeight: "400",
                 fontSize: "0.875rem",
                 lineHeight: 1.43,
@@ -247,7 +248,7 @@ const Detail = () => {
               }}
             >
               {details?.content}
-            </p>
+            </Typography>
             <Grid
               sx={{
                 display: "flex",
@@ -343,7 +344,7 @@ const Detail = () => {
                 </IconButton>
 
                 <IconButton
-                  onClick={() => deleteBlogData("blogs", id)}
+                  onClick={handleOpenDeleteModal}
                   sx={{
                     marginBottom: ".8rem",
                     marginInlineStart: "1rem",
@@ -353,6 +354,10 @@ const Detail = () => {
                 >
                   <DeleteIcon />
                 </IconButton>
+                <DeleteBlogModal
+                  open={openDeleteModal}
+                  handleClose={handleCloseDeleteModal}
+                />
               </Grid>
             )}
           </CardActions>
