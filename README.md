@@ -1,5 +1,5 @@
 
-# Blog App with Redux Toolkit
+# myBlog App with Redux-Toolkit
 
 ## Description
 
