@@ -35,47 +35,83 @@ const LoginForm = ({setAuthType}) => {
   });
 
   return (
-    <Container>
-      <form onSubmit={formik.handleSubmit} >
-        <Box sx={{textAlign: 'center'}}>
-          <LockIcon sx={{width:50, height:50, padding: 0.8, borderRadius: '50%', backgroundColor:'#ffcd44'}}/>
-        </Box>
-        
-        <Typography sx={{marginBottom: 4, textAlign:'center'}} variant='h4' >
-          Sign in 
-        </Typography>
-        <TextField
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          sx={{marginTop:2}}
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-        <Button color="primary" variant="contained" fullWidth type="submit" sx={{marginTop: 3, "&:hover": {backgroundColor:'#57c1ff'}}}>
-          Sign In
-        </Button>
-        <Typography sx={{marginTop: 1, textAlign:'center'}}>
-          Don't have an account? <Link underline="none" onClick={()=>setAuthType('register')} sx={{cursor: 'pointer', "&:hover": {color:'#57c1ff'}}}>Sign Up</Link> 
-        </Typography>
-      </form>
-    </Container>
+    <Box sx={{ backgroundColor: "primary.backgroundSecondary" }}>
+      <Container>
+        <form onSubmit={formik.handleSubmit}>
+          <Box sx={{ textAlign: "center" }}>
+            <LockIcon
+              sx={{
+                width: 50,
+                height: 50,
+                padding: 0.8,
+                borderRadius: "50%",
+                backgroundColor: "#ffcd44",
+              }}
+            />
+          </Box>
+
+          <Typography
+            sx={{
+              marginBottom: 4,
+              textAlign: "center",
+              color: "primary.textMain",
+            }}
+            variant="h4"
+          >
+            Sign in
+          </Typography>
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextField
+            sx={{ marginTop: 2 }}
+            fullWidth
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+          />
+          <Button
+            color="primary"
+            variant="contained"
+            fullWidth
+            type="submit"
+            sx={{
+              marginTop: 3,
+              "&:hover": { backgroundColor: "primary.buttonHover" },
+            }}
+          >
+            Sign In
+          </Button>
+          <Typography sx={{ marginTop: 1, textAlign: "center", color:"primary.textMain" }}>
+            Don't have an account?{" "}
+            <Link
+              underline="none"
+              onClick={() => setAuthType("register")}
+              sx={{
+                cursor: "pointer",
+                "&:hover": { color: "primary.buttonHover" },
+              }}
+            >
+              Sign Up
+            </Link>
+          </Typography>
+        </form>
+      </Container>
+    </Box>
   );
 };
 

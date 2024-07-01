@@ -138,76 +138,100 @@ const CommentsCard = ({ip, id, title, content, likes_num, dislikes_num, username
 
     
   return (
-    <Card sx={{ width: 645, height: 'fitContent', mx:'auto', backgroundColor:'primary.addComment'}}>
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="div" sx={{}}>
-              {title}
+    <Card
+      sx={{
+        width: 645,
+        height: "fitContent",
+        mx: "auto",
+        backgroundColor: "primary.readComment",
+      }}
+    >
+      <CardContent>
+        <Typography gutterBottom variant="h6" component="div" sx={{}}>
+          {title}
+        </Typography>
+        <p
+          style={{
+            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+            overflow: "scroll",
+            //textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            color: "#f89f6c",
+            fontWeight: "400",
+            fontSize: "0.875rem",
+            lineHeight: 1.43,
+            letterSpacing: "0.01071em",
+            marginTop: "1.0rem",
+          }}
+        >
+          {content}
+        </p>
+        <Grid
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box>
+            <Box
+              sx={{ display: "flex", alignItems: "center", marginTop: "2rem" }}
+            >
+              <AccountCircleIcon />
+              <Typography variant="body2" color="text.secondary">
+                {username}
+              </Typography>
+            </Box>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ marginTop: "1rem", marginBottom: "-1rem" }}
+            >
+              {date} {time}
             </Typography>
-            <p style={{
-              fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-              overflow: "scroll",
-              //textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-              color:'gray',
-              fontWeight: '400',
-              fontSize:'0.875rem',
-              lineHeight: 1.43,
-              letterSpacing: "0.01071em",
-              marginTop:'1.0rem'
-            }}>
-              {content}
-            </p>
-            <Grid sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                <Box>
-                  <Box sx={{display:'flex', alignItems:'center', marginTop:'2rem'}} >
-                    <AccountCircleIcon/>
-                    <Typography variant="body2" color="text.secondary">
-                        {username}
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2" color="text.secondary" sx={{marginTop:'1rem', marginBottom:'-1rem'}}>
-                    {date}  {time}
-                  </Typography>
-                </Box>
-                <CardActions>
-                  {
-                    thumbsUpClicked ? (
-                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.8rem', color:'green'}}>
-                        <ThumbUpAltIcon/>
-                      </IconButton>
-                    ):
-                    (
-                      <IconButton onClick={handleThumbsUpButtonClick} sx={{marginRight:'-0.8rem'}}>
-                        <ThumbUpAltIcon/>
-                      </IconButton>
-                    )
-                  }
-                  
-                  <Typography>{likes_num}</Typography>
-                  {
-                    thumbsDownClicked ? (
-                      <IconButton onClick={handleThumbsDownButtonClick} sx={{marginRight:'-0.7rem', color:'red'}}>
-                        <ThumbDownAltIcon/>
-                      </IconButton>
-                    ) 
-                    : (
-                      <IconButton onClick={handleThumbsDownButtonClick} sx={{marginRight:'-0.7rem'}}>
-                        <ThumbDownAltIcon/>
-                      </IconButton>
-                    )
-                  }
-                  
-                  <Typography>{dislikes_num}</Typography>
-                </CardActions>
-            </Grid>
-          
-        </CardContent>
-        
-        
-        </Card>
-  )
+          </Box>
+          <CardActions>
+            {thumbsUpClicked ? (
+              <IconButton
+                onClick={handleThumbsUpButtonClick}
+                sx={{ marginRight: "-0.8rem", color: "green" }}
+              >
+                <ThumbUpAltIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={handleThumbsUpButtonClick}
+                sx={{ marginRight: "-0.8rem" }}
+              >
+                <ThumbUpAltIcon />
+              </IconButton>
+            )}
+
+            <Typography>{likes_num}</Typography>
+            {thumbsDownClicked ? (
+              <IconButton
+                onClick={handleThumbsDownButtonClick}
+                sx={{ marginRight: "-0.7rem", color: "red" }}
+              >
+                <ThumbDownAltIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={handleThumbsDownButtonClick}
+                sx={{ marginRight: "-0.7rem" }}
+              >
+                <ThumbDownAltIcon />
+              </IconButton>
+            )}
+
+            <Typography>{dislikes_num}</Typography>
+          </CardActions>
+        </Grid>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default CommentsCard

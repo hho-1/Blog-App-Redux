@@ -133,7 +133,7 @@ const Detail = () => {
 
   useEffect(() => {
     // Bağımlılıklar değiştiğinde 'contributions' ve 'users' verileri güncellenmiş olur
-    const data = contributions.filter((item) => item.id === id);
+    const data = contributions?.filter((item) => item.id === id);
     setDetails(data[0]);
 
     const user = users.find((user) => user._id === data[0]?.user_id);
@@ -186,9 +186,11 @@ const Detail = () => {
     }
   };
 
+  const darkMode = useSelector((state) => state.theme.darkMode);
+
   return (
-    <Box sx={{ backgroundColor: "primary.backgroundMain", paddingTop: "2rem" }}>
-      <Container sx={{ minHeight: "80vh" }}>
+    <Box sx={{ backgroundColor: "primary.backgroundMain", padding: "2rem" }}>
+      <Container sx={{ minHeight: "76vh" }}>
         <Card
           sx={{
             width: 745,
@@ -197,6 +199,7 @@ const Detail = () => {
             mx: "auto",
             marginTop: "1rem",
             backgroundColor: "primary.backgroundSecondary",
+            
           }}
         >
           <CardMedia
@@ -318,9 +321,9 @@ const Detail = () => {
                 variant="contained"
                 sx={{
                   marginBottom: "1.2rem",
-                  backgroundColor: "#0068e3",
-                  color: "white",
-                  "&:hover": { backgroundColor: "#4290f0", color: "#ffcd44" },
+                  backgroundColor: "primary.buttonColor",
+                  color: "primary.textMain",
+                  "&:hover": { backgroundColor: "primary.buttonHover" },
                 }}
               >
                 Write Comment
@@ -383,7 +386,7 @@ const Detail = () => {
             size="medium"
             onClick={() => navigate(-1)}
             variant="contained"
-            sx={{ "&:hover": { backgroundColor: "#e2e55e" } }}
+            sx={{ "&:hover": { backgroundColor: "primary.buttonHover" } }}
           >
             Go Back
           </Button>

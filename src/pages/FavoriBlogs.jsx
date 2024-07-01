@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Container, Grid } from '@mui/material'
+import { Box, Button, Container, Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
@@ -56,7 +56,8 @@ const FavoriBlogs = () => {
   }
 
   return (
-    <Container sx={{height:'fit-content', minHeight:'82vh', marginBottom:'2rem'}}>
+    <Box sx={{backgroundColor:"primary.backgroundMain", padding: "2rem"}}>
+      <Container sx={{height:'fit-content', minHeight:'82vh'}}>
       <Grid
         container
         alignItems="center"
@@ -71,10 +72,12 @@ const FavoriBlogs = () => {
         ))}
         
       </Grid>
-      <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'27vw', marginBottom:'3rem'}}>
-        <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
+      <Grid item xs={4} sx={{marginTop:'3rem', display:"flex", justifyContent:"center", marginBottom:'3rem'}}>
+        <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: 'primary.buttonHover'}}}>Go Back</Button>
       </Grid>
     </Container>
+    </Box>
+    
   )
 }
 

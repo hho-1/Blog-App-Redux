@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Container, Grid } from '@mui/material'
+import { Box, Button, Container, Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import useBlogCall from '../hooks/useBlogCall';
 import { useSelector } from 'react-redux';
@@ -38,26 +38,44 @@ const MyBlogs = () => {
   }, []);
 
   return (
-    <Container sx={{height:'fit-content', minHeight:'82vh', marginBottom:'2rem'}}>
-      <Grid
-        container
-        alignItems="center"
-        display={"flex"}
-        justifyContent="center"
-        spacing={3}
-        mt={3}>
-        {myBlogs?.map(item => (
-          <Grid item key={item.id}>
-            <ImgMediaCard entry={item} {...item}/>
-          </Grid>
-        ))}
-        
-      </Grid>
-      <Grid item xs={4} sx={{marginTop:'3rem', marginLeft:'27vw', marginBottom:'3rem'}}>
-        <Button size="medium" onClick={()=>navigate(-1)} variant='contained' sx={{"&:hover": {backgroundColor: '#e2e55e'}}}>Go Back</Button>
-      </Grid>
-    </Container>
-  )
+    <Box sx={{ backgroundColor: "primary.backgroundMain", padding: "2rem" }}>
+      <Container sx={{ height: "fit-content", minHeight: "75vh" }}>
+        <Grid
+          container
+          alignItems="center"
+          display={"flex"}
+          justifyContent="center"
+          spacing={3}
+          mt={3}
+        >
+          {myBlogs?.map((item) => (
+            <Grid item key={item.id}>
+              <ImgMediaCard entry={item} {...item} />
+            </Grid>
+          ))}
+        </Grid>
+        <Grid
+          item
+          xs={4}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem",
+          }}
+        >
+          <Button
+            size="medium"
+            onClick={() => navigate(-1)}
+            variant="contained"
+            sx={{ "&:hover": { backgroundColor: "primary.buttonHover" } }}
+          >
+            Go Back
+          </Button>
+        </Grid>
+      </Container>
+    </Box>
+  );
 }
 
 export default MyBlogs

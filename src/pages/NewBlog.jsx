@@ -73,7 +73,7 @@ useEffect(() => {
         <Box sx={{ width: 550, margin: "auto" }}>
           <Box component="form" onSubmit={handleSubmit}>
             <Typography
-              sx={{ marginBottom: 4, textAlign: "center" }}
+              sx={{ marginBottom: 4, textAlign: "center", color:"primary.textMain" }}
               variant="h4"
             >
               New Blog

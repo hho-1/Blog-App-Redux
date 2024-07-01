@@ -166,7 +166,7 @@ function ResponsiveAppBar({ setAuthType }) {
                 <MenuItem key={page} onClick={handleLeftMenuClick}>
                   <Typography
                     textAlign="center"
-                    sx={{ color: "text.primary", bgcolor: "primary.main" }}
+                    sx={{ color: "primary.textMain" }}
                   >
                     {page}
                   </Typography>
@@ -181,7 +181,7 @@ function ResponsiveAppBar({ setAuthType }) {
                   height: 50,
                   width: 50,
                   visibility: { xs: "flex", md: "hidden" },
-                  marginRight: ".5rem"
+                  marginRight: ".5rem",
                 }}
               />
             </Box>
@@ -225,7 +225,10 @@ function ResponsiveAppBar({ setAuthType }) {
                   color: "primary.textMain",
                   display: "block",
                   fontSize: "1rem",
-                  "&:hover": { border: "1px solid #002499" },
+                  "&:hover": {
+                    border: "1px solid",
+                    borderColor: "primary.menuBorder",
+                  },
                 }}
               >
                 {page}

@@ -36,7 +36,7 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
         setCategoryId={setCategoryId}
       />
       <Container
-        sx={{ height: "fit-content", minHeight: "82vh", marginBottom: "2rem" }}
+        sx={{ height: "fit-content", minHeight: "82vh", paddingBottom:"2rem" }}
       >
         <Grid
           container

@@ -195,7 +195,7 @@ export default function ImgMediaCard({
             onClick={() => navigate("/blogs/" + id)}
             size="small"
             variant="contained"
-            sx={{ "&:hover": { backgroundColor: "#e2e55e" } }}
+            sx={{ "&:hover": { backgroundColor: "primary.buttonHover" } }}
           >
             Read More
           </Button>
