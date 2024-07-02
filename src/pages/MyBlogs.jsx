@@ -28,7 +28,7 @@ const MyBlogs = () => {
       return user.username === currentUser              //"testUser1"
     })
     //console.log(users);
-    const blogs = contributions.filter((blog) => {return blog.user_id === data[0]._id})
+    const blogs = contributions?.filter((blog) => {return blog.user_id === data[0]._id})
     //console.log(data);
     setMyBlogs(blogs)
     //console.log(myBlogs);

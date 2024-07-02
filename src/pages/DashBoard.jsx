@@ -28,7 +28,7 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
   const [isFiltered, setIsFiltered] = useState(false)
   const [categoryId, setCategoryId] = useState("")
 
-  //console.log(contributions);
+  //console.log(isFiltered);
   return (
     <Box sx={{ backgroundColor: "primary.backgroundMain"}}>
       <CategoryBar
@@ -47,11 +47,10 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
           mt={3}
         >
           {isFiltered
-            ? contributions
-                .filter((blog) => {
+            ? contributions?.filter((blog) => {
                   return (
                     blog.category_id === categoryId &&
-                    blog.status_id === "658451adb081ace3b52f149b"
+                    blog.status_id === "6684291731fc068c3f0d26eb"
                   );
                 })
                 .map((filteredEntry, index) => {
@@ -62,9 +61,8 @@ const DashBoard = (/* {handleLikeClick, likeClicked, setLikeClicked, likesNum, s
                     />
                   );
                 })
-            : contributions
-                .filter((blog) => {
-                  return blog.status_id === "658451adb081ace3b52f149b";
+            : contributions?.filter((blog) => {
+                  return blog.status_id === "6684291731fc068c3f0d26eb";
                 })
                 .map((blog, index) => {
                   return (

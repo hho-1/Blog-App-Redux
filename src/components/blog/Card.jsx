@@ -133,7 +133,21 @@ export default function ImgMediaCard({
           gutterBottom
           variant="h5"
           component="div"
-          sx={{ textAlign: "center", marginTop: "-10rem" }}
+          sx={{
+            textAlign: "center",
+            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            color: "primary.textMain",
+            fontWeight: "600",
+            fontSize: "1rem",
+            lineHeight: 1.43,
+            letterSpacing: "0.01071em",
+            marginTop: "-10rem",
+          }}
         >
           {title}
         </Typography>
@@ -143,7 +157,7 @@ export default function ImgMediaCard({
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "-webkit-box",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             color: "primary.textMain",
             fontWeight: "400",
@@ -155,18 +169,23 @@ export default function ImgMediaCard({
         >
           {content}
         </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ marginTop: "2rem", marginBottom: "1rem" }}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "2.5rem",
+            marginBottom: "0rem",
+          }}
         >
-          {date} {time}
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <AccountCircleIcon />
-          <Typography variant="body2" color="text.secondary">
-            {username}
+          <Typography variant="body2" color="text.secondary" sx={{}}>
+            {date} {time}
           </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <AccountCircleIcon />
+            <Typography variant="body2" color="text.secondary">
+              {username}
+            </Typography>
+          </Box>
         </Box>
       </CardContent>
       <CardActions>
@@ -205,7 +224,7 @@ export default function ImgMediaCard({
         </Grid>
         <Grid item xs={4}>
           <Button
-            onClick={()=>handleReadMoreClick()}
+            onClick={() => handleReadMoreClick()}
             size="small"
             variant="contained"
             sx={{ "&:hover": { backgroundColor: "primary.buttonHover" } }}
