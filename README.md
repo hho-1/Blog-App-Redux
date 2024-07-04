@@ -13,6 +13,7 @@ https://blog-app-redux.onrender.com
 3. When you would like to add a new blog, click on NEW BLOG button on the top menu and enter your blog.
 4. On the top-right menu, you can see the blogs entered by you and your favorite blogs which you have given likes.
 5. You can switch to dark theme mode by clicking the button near the top-right menu.
+6. You can filter the blogs by 10 different categories by clicking the bar at the second top of the website.
 
 ## Project Skeleton
 
