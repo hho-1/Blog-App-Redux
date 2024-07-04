@@ -15,6 +15,12 @@ https://blog-app-redux.onrender.com
 5. You can switch to dark theme mode by clicking the button near the top-right menu.
 6. You can filter the blogs by 10 different categories by clicking the bar at the second top of the website.
 
+## Project Gifs
+![Project Snapshot](projectGif1.gif)
+![Project Snapshot](projectGif2.gif)
+![Project Snapshot](projectGif3.gif)
+![Project Snapshot](projectGif4.gif)
+
 ## Project Skeleton
 
 Blog App
